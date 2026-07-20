@@ -4,855 +4,579 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>試験サポート | 匡電気管理事務所</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#2E3578;--sub:#5A6B75;--line:#D8DFE2;--bg:#EEF2F1;--card:#FFF;--green:#0E7A5F;--green-bg:#E4F2ED;--amber:#B97800;--amber-bg:#FBF1DC;--red:#C6432B;--red-bg:#F9E8E4;--lineapp:#06C755;--yellow:#FFE500;--mono:'IBM Plex Mono',monospace}
+:root{--brand:#2E3578;--ink:#1a1f36;--sub:#6b7280;--line:#e0e3e8;--bg:#f3f4f6;--card:#fff;--green:#0d9668;--green-bg:#e6f7f0;--amber:#c28200;--amber-bg:#fef3cd;--red:#c6432b;--red-bg:#fde8e4;--lineapp:#06c755;--yellow:#ffe500;--mono:'SF Mono',Consolas,'Courier New',monospace}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'IBM Plex Sans JP',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:72px;font-size:15px}
-header{background:var(--ink);color:#fff;padding:10px 14px 9px;display:flex;justify-content:space-between;align-items:center}
-header .left{display:flex;align-items:center;gap:10px}
-header .logo{width:36px;height:36px;border-radius:8px}
-header .left .brand{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.55)}
-header h1{font-size:15px;font-weight:700;margin-top:1px}
-header .user{font-size:11px;color:rgba(255,255,255,.55);text-align:right}
-header .user b{color:#fff;font-size:12px;display:block}
-main{max-width:760px;margin:0 auto;padding:12px 10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 12px;margin-bottom:12px}
-.card-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:3px}
-.card-title .tag{font-family:var(--mono);font-size:10px;background:var(--ink);color:#fff;padding:2px 6px;border-radius:4px}
-.card-sub{font-size:12px;color:var(--sub);margin-bottom:10px}
-/* nav */
+body{font-family:-apple-system,'Hiragino Sans',sans-serif;background:var(--bg);color:var(--ink);padding-bottom:68px;font-size:15px}
+header{background:var(--brand);color:#fff;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+header .left{display:flex;align-items:center;gap:8px}
+header .logo{width:32px;height:32px;border-radius:7px}
+header .brand{font-size:9px;color:rgba(255,255,255,.5)}
+header h1{font-size:14px;font-weight:700}
+header .right{display:flex;align-items:center;gap:8px}
+.save-btn{padding:6px 12px;border:1.5px solid var(--yellow);border-radius:8px;background:transparent;color:var(--yellow);font-size:11px;font-weight:700;cursor:pointer}
+.user-label{font-size:10px;color:rgba(255,255,255,.5)}
+.user-label b{color:#fff;font-size:11px}
+main{max-width:760px;margin:0 auto;padding:10px 8px}
+.cd{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;margin-bottom:10px}
+.cd-t{font-size:14px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.cd-t .tg{font-family:var(--mono);font-size:9px;background:var(--brand);color:#fff;padding:2px 6px;border-radius:3px}
+.cd-s{font-size:11px;color:var(--sub);margin-bottom:8px}
 nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;z-index:50}
-nav button{flex:1;padding:7px 0 8px;border:none;background:none;font-family:inherit;font-size:9.5px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
-nav button .ic{font-size:18px;line-height:1}
-nav button.on{color:var(--ink);font-weight:700}
+nav button{flex:1;padding:6px 0 7px;border:none;background:none;font-size:9px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
+nav button .ic{font-size:17px}
+nav button.on{color:var(--brand);font-weight:700}
 .page{display:none}.page.on{display:block}
+/* form */
+.fr{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.fr label{font-size:11px;font-weight:700;white-space:nowrap;min-width:68px}
+.fr input,.fr select{flex:1;padding:8px 6px;border:1px solid var(--line);border-radius:7px;font-size:13px;background:#fff}
+.fr input[type=number]{font-family:var(--mono);font-weight:600}
+.fr .u{font-size:11px;color:var(--sub);white-space:nowrap}
+.sep{border:none;border-top:1px solid var(--line);margin:10px 0}
 /* timer */
-.tdisp{font-family:var(--mono);font-size:56px;font-weight:600;text-align:center;letter-spacing:.03em;font-variant-numeric:tabular-nums;padding:4px 0}
-.tdisp.warn{color:var(--amber)}.tdisp.done{color:var(--red)}
-.tstate{text-align:center;font-size:12px;color:var(--sub);margin-bottom:8px;min-height:16px}
-.rail{display:flex;align-items:center;margin:4px 4px 12px}
-.rail .seg{flex:1;height:4px;background:var(--line);border-radius:2px}
-.rail .seg.fill{background:var(--green)}
-.rail .cp{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:#fff;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--sub);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.rail .cp.hit{border-color:var(--green);background:var(--green);color:#fff}
-.tbtns{display:flex;gap:8px}
-.tbtns button{flex:1;padding:13px 0;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
-.tbtns .go{background:var(--green);border-color:var(--green);color:#fff}
-.tbtns .go.pause{background:var(--amber);border-color:var(--amber)}
-.tbtns .rst{color:var(--sub)}
-.alertlog{margin-top:10px;font-size:12px;color:var(--sub)}
-.alertlog div{padding:3px 0;border-bottom:1px dashed var(--line)}
-.alertlog div b{font-family:var(--mono);color:var(--ink)}
-/* inputs */
-.frow{display:flex;gap:8px;margin-bottom:8px;align-items:center}
-.frow label{font-size:12px;font-weight:700;white-space:nowrap;min-width:80px}
-.frow input,.frow select{flex:1;padding:9px 8px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;background:#fff}
-.frow input[type=number]{font-family:var(--mono);font-weight:600}
-.frow .unit{font-size:12px;color:var(--sub);white-space:nowrap}
-.sep{border:none;border-top:1px solid var(--line);margin:12px 0}
-/* tables */
-.mtable{width:100%;border-collapse:collapse;font-size:13px}
-.mtable th{font-size:11px;color:var(--sub);font-weight:500;text-align:left;padding:4px 3px;border-bottom:1px solid var(--line);white-space:nowrap}
-.mtable td{padding:5px 3px;border-bottom:1px solid var(--line);vertical-align:middle}
-.mtable input,.mtable select{width:100%;padding:8px 5px;border:1px solid var(--line);border-radius:7px;font-family:inherit;font-size:13px;background:#fff;color:var(--ink)}
-.mtable input[type=number]{font-family:var(--mono);font-weight:600}
-.mtable input.ok{background:var(--green-bg);border-color:var(--green);color:var(--green)}
-.mtable input.ng{background:var(--red-bg);border-color:var(--red);color:var(--red)}
-.jd{font-family:var(--mono);font-size:12px;font-weight:700;text-align:center;border-radius:6px;padding:8px 0;min-width:38px}
+.td{font-family:var(--mono);font-size:52px;font-weight:700;text-align:center;letter-spacing:.02em;font-variant-numeric:tabular-nums;padding:4px 0}
+.td.warn{color:var(--amber)}.td.done{color:var(--red)}
+.ts{text-align:center;font-size:11px;color:var(--sub);margin-bottom:6px;min-height:14px}
+.rail{display:flex;align-items:center;margin:2px 4px 10px}
+.rail .sg{flex:1;height:3px;background:var(--line);border-radius:2px}
+.rail .sg.f{background:var(--green)}
+.rail .cp{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:#fff;font-family:var(--mono);font-size:8px;font-weight:700;color:var(--sub);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rail .cp.h{border-color:var(--green);background:var(--green);color:#fff}
+.tb{display:flex;gap:6px}
+.tb button{flex:1;padding:12px 0;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.tb .go{background:var(--green);border-color:var(--green);color:#fff}
+.tb .go.p{background:var(--amber);border-color:var(--amber)}
+.tb .rst{color:var(--sub)}
+.alog{margin-top:8px;font-size:11px;color:var(--sub)}
+.alog div{padding:2px 0;border-bottom:1px dashed var(--line)}
+.alog div b{font-family:var(--mono);color:var(--ink)}
+/* sub-tabs */
+.stabs{display:flex;gap:4px;margin-bottom:8px}
+.stabs button{flex:1;padding:8px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:var(--sub)}
+.stabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.spane{display:none}.spane.on{display:block}
+/* table */
+.mt{width:100%;border-collapse:collapse;font-size:12px}
+.mt th{font-size:10px;color:var(--sub);font-weight:500;text-align:left;padding:3px;border-bottom:1px solid var(--line);white-space:nowrap}
+.mt td{padding:4px 2px;border-bottom:1px solid var(--line);vertical-align:middle}
+.mt input,.mt select{width:100%;padding:7px 4px;border:1px solid var(--line);border-radius:6px;font-size:12px;background:#fff}
+.mt input[type=number]{font-family:var(--mono);font-weight:600}
+.mt input.ok{background:var(--green-bg);border-color:var(--green)}.mt input.ng{background:var(--red-bg);border-color:var(--red)}
+.jd{font-family:var(--mono);font-size:11px;font-weight:700;text-align:center;border-radius:5px;padding:7px 0;min-width:32px}
 .jd.ok{background:var(--green-bg);color:var(--green)}.jd.ng{background:var(--red-bg);color:var(--red)}.jd.na{background:var(--bg);color:var(--sub)}
-.rowbtns{display:flex;gap:8px;margin-top:8px}
-.rowbtns button{padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.rowbtns .add{border-color:var(--ink)}.rowbtns .del{color:var(--red)}
-.grp{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#FAFCFB}
-.grp .ghead{display:flex;gap:6px;align-items:center;margin-bottom:6px}
-.grpname{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:13px;font-weight:700}
-.gdel{border:none;background:none;color:var(--red);font-size:12px;cursor:pointer;padding:6px;white-space:nowrap}
-.copybar{display:flex;gap:8px;margin-top:6px}
-.copybar button{flex:1;padding:12px 0;border-radius:10px;border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--lineapp);color:#fff}
-/* result table */
-.rtable{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
-.rtable th,.rtable td{border:1px solid var(--line);padding:8px 6px;text-align:center}
-.rtable th{background:var(--bg);font-size:11px;font-weight:700}
-.rtable td{font-family:var(--mono);font-weight:600}
-.rtable .hl{background:var(--green-bg);color:var(--green)}
+.rb{display:flex;gap:6px;margin-top:6px}
+.rb button{padding:8px 10px;border-radius:7px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.rb .add{border-color:var(--ink)}.rb .del{color:var(--red)}
+.grp{border:1px solid var(--line);border-radius:9px;padding:8px;margin-bottom:8px;background:#fafbfc}
+.grp .gh{display:flex;gap:6px;align-items:center;margin-bottom:4px}
+.gn{flex:1;padding:7px;border:1px solid var(--line);border-radius:7px;font-size:12px;font-weight:700}
+.gd{border:none;background:none;color:var(--red);font-size:11px;cursor:pointer;padding:4px}
+/* result */
+.rt{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.rt th,.rt td{border:1px solid var(--line);padding:7px 4px;text-align:center}
+.rt th{background:var(--bg);font-size:10px;font-weight:700}
+.rt td{font-family:var(--mono);font-weight:600}
+.rt .hl{background:var(--green-bg);color:var(--green)}
+/* save bar */
+.sv{display:flex;gap:6px;margin-top:6px}
+.sv button{flex:1;padding:11px 0;border-radius:9px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:var(--brand);color:#fff}
 /* calc */
-.cdisp{font-family:var(--mono);font-size:30px;font-weight:600;text-align:right;background:var(--ink);color:#E7F0EE;border-radius:10px;padding:14px 12px;margin-bottom:10px;min-height:64px;word-break:break-all}
-.cdisp .expr{display:block;font-size:12px;color:#9FB4BF;min-height:15px}
-.ckeys{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.ckeys button{padding:14px 0;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:var(--mono);font-size:18px;font-weight:600;cursor:pointer}
-.ckeys .fn{background:var(--bg);font-size:15px}.ckeys .op{background:var(--amber-bg);color:var(--amber)}.ckeys .eq{background:var(--green);border-color:var(--green);color:#fff}.ckeys .wide{grid-column:span 2}
+.cdisp{font-family:var(--mono);font-size:28px;font-weight:600;text-align:right;background:var(--ink);color:#e7f0ee;border-radius:9px;padding:12px 10px;margin-bottom:8px;min-height:60px;word-break:break-all}
+.cdisp .expr{display:block;font-size:11px;color:#9fb4bf;min-height:14px}
+.ck{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.ck button{padding:12px 0;border-radius:8px;border:1px solid var(--line);background:#fff;font-family:var(--mono);font-size:14px;font-weight:600;cursor:pointer}
+.ck .fn{background:var(--bg);font-size:11px}.ck .op{background:var(--amber-bg);color:var(--amber)}.ck .eq{background:var(--green);border-color:var(--green);color:#fff}.ck .w2{grid-column:span 2}
+/* sensor tools */
+.sensor-disp{text-align:center;padding:16px 0}
+.sensor-val{font-family:var(--mono);font-size:56px;font-weight:700;color:var(--brand)}
+.sensor-unit{font-size:14px;color:var(--sub)}
+.sensor-bar{height:8px;background:var(--line);border-radius:4px;margin:8px 16px;position:relative;overflow:visible}
+.sensor-dot{position:absolute;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:left .1s}
+.level-wrap{position:relative;width:200px;height:200px;margin:0 auto;border:3px solid var(--line);border-radius:50%;background:#fff}
+.level-bubble{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--green);transition:transform .1s;top:50%;left:50%;transform:translate(-50%,-50%)}
+.level-cross{position:absolute;top:50%;left:50%;width:40px;height:40px;transform:translate(-50%,-50%)}
+.level-cross::before,.level-cross::after{content:'';position:absolute;background:var(--line)}
+.level-cross::before{width:1px;height:100%;left:50%}
+.level-cross::after{width:100%;height:1px;top:50%}
+/* weather */
+.wx{display:flex;gap:8px;padding:8px;background:var(--bg);border-radius:8px;font-size:12px;align-items:center;margin-bottom:8px}
+.wx .wicon{font-size:24px}.wx .wdata{flex:1}.wx .wdata b{font-size:16px}
 /* camera */
-.cam-wrap{position:relative;width:100%;max-width:480px;margin:0 auto;background:#000;border-radius:10px;overflow:hidden}
-.cam-wrap video,.cam-wrap canvas{width:100%;display:block;border-radius:10px}
-.cam-btns{display:flex;gap:8px;justify-content:center;margin-top:8px}
-.cam-btns button{padding:12px 20px;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.cam-wrap{width:100%;max-width:480px;margin:0 auto;background:#000;border-radius:9px;overflow:hidden}
+.cam-wrap video{width:100%;display:block}
+.cam-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.cam-btns button{padding:10px 16px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:700;cursor:pointer}
 .cam-btns .shoot{background:var(--red);border-color:var(--red);color:#fff}
-.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
-.photos img{width:100%;border-radius:6px;cursor:pointer}
-/* login overlay */
-#loginOverlay{position:fixed;inset:0;background:#2E3578;z-index:200;display:flex;align-items:center;justify-content:center}
-.login-box{background:var(--card);border-radius:16px;padding:28px 20px;width:90%;max-width:360px}
-.login-box h2{font-size:18px;margin-bottom:4px}
-.login-box .brand{font-size:11px;color:var(--sub);margin-bottom:20px}
-.login-box input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:15px;margin-bottom:10px}
-.login-box .btn{width:100%;padding:14px;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-bottom:8px}
-.login-box .link{font-size:12px;color:var(--green);cursor:pointer;text-decoration:underline;display:inline-block;margin:2px 8px}
-.login-box .err{color:var(--red);font-size:12px;min-height:18px;margin-bottom:6px}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px}
+.photos img{width:100%;border-radius:5px;cursor:pointer}
+/* login */
+#loginO{position:fixed;inset:0;background:var(--brand);z-index:200;display:flex;align-items:center;justify-content:center}
+.lbox{background:var(--card);border-radius:14px;padding:24px 18px;width:90%;max-width:340px}
+.lbox h2{font-size:17px;margin-bottom:3px}.lbox .brand{font-size:11px;color:var(--sub);margin-bottom:16px}
+.lbox input{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;font-size:14px;margin-bottom:8px}
+.lbox .btn{width:100%;padding:13px;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-bottom:6px}
+.lbox .link{font-size:11px;color:var(--green);cursor:pointer;text-decoration:underline;display:inline-block;margin:2px 6px}
+.lbox .err{color:var(--red);font-size:11px;min-height:16px;margin-bottom:4px}
 /* modal */
-.modal-bg{position:fixed;inset:0;background:rgba(20,35,46,.5);z-index:300;display:flex;align-items:center;justify-content:center}
-.modal{background:var(--card);border-radius:16px;padding:24px 18px;width:90%;max-width:360px}
-.modal h3{font-size:16px;margin-bottom:12px}
-.modal input{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;margin-bottom:8px}
-.modal .btn{width:100%;padding:13px;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-bottom:6px}
-.modal .cancel{background:var(--bg);color:var(--ink)}
-.modal .err{color:var(--red);font-size:12px;min-height:16px;margin-bottom:4px}
-.modal .ok-msg{color:var(--green);font-size:12px;min-height:16px;margin-bottom:4px}
-/* toast */
-#toasts{position:fixed;top:10px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:100;pointer-events:none}
-.toast{background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(20,35,46,.25);display:flex;gap:8px;align-items:center;padding:10px 14px;max-width:92%;animation:tin .25s ease}
-.toast .dot{width:30px;height:30px;border-radius:8px;background:var(--lineapp);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.toast .tt{font-size:13px;font-weight:700}.toast .tm{font-size:11px;color:var(--sub)}
-@keyframes tin{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.toast{animation:none}}
-/* save button */
-.save-btn{padding:8px 14px;border:2px solid var(--lineapp);border-radius:10px;background:transparent;color:var(--lineapp);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px}
-.save-btn:active{background:var(--lineapp);color:#fff}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:flex;align-items:center;justify-content:center}
+.mdl{background:var(--card);border-radius:14px;padding:20px 16px;width:90%;max-width:340px}
+.mdl h3{font-size:15px;margin-bottom:10px}
+.mdl input{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:6px}
+.mdl .btn{width:100%;padding:12px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-bottom:4px}
+.mdl .cancel{background:var(--bg);color:var(--ink)}
+.mdl .err{color:var(--red);font-size:11px;min-height:14px;margin-bottom:4px}
+.mdl .ok-msg{color:var(--green);font-size:11px;min-height:14px;margin-bottom:4px}
 /* save progress */
-#saveProgress{position:fixed;inset:0;background:rgba(20,35,46,.6);z-index:400;display:none;align-items:center;justify-content:center}
-#saveProgress.on{display:flex}
-.save-modal{background:var(--card);border-radius:16px;padding:28px 20px;width:85%;max-width:340px;text-align:center}
-.save-modal h3{font-size:16px;margin-bottom:12px}
-.save-modal .bar-wrap{background:var(--line);border-radius:6px;height:10px;margin:12px 0}
-.save-modal .bar-fill{height:100%;border-radius:6px;background:var(--green);transition:width .3s;width:0%}
-.save-modal .status{font-size:13px;color:var(--sub);margin-bottom:8px;min-height:20px}
-.save-modal .done-btn{display:none;padding:12px 0;width:100%;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-top:8px}
-/* photo count badge */
-.photo-badge{position:fixed;bottom:78px;right:12px;background:var(--lineapp);color:#fff;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;z-index:40;display:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-/* hide scrollbar on nav area */
-body::-webkit-scrollbar{display:none}
+#saveP{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center}
+#saveP.on{display:flex}
+.spm{background:var(--card);border-radius:14px;padding:24px 18px;width:85%;max-width:320px;text-align:center}
+.spm h3{font-size:15px;margin-bottom:10px}
+.spm .bw{background:var(--line);border-radius:5px;height:8px;margin:10px 0}
+.spm .bf{height:100%;border-radius:5px;background:var(--green);transition:width .3s;width:0%}
+.spm .st{font-size:12px;color:var(--sub);margin-bottom:6px;min-height:18px}
+.spm .dn{display:none;padding:11px 0;width:100%;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-top:6px}
+/* toast */
+#toasts{position:fixed;top:8px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:100;pointer-events:none}
+.toast{background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);display:flex;gap:6px;align-items:center;padding:8px 12px;max-width:92%;animation:tin .2s ease}
+.toast .dot{width:28px;height:28px;border-radius:7px;background:var(--lineapp);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.toast .tt{font-size:12px;font-weight:700}.toast .tm{font-size:10px;color:var(--sub)}
+@keyframes tin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-
-<!-- ===== LOGIN ===== -->
-<div id="loginOverlay">
-<div class="login-box">
-  <div style="text-align:center;margin-bottom:14px"><img src="https://raw.githubusercontent.com/td-denki/support-tools/main/logo_1.png" alt="tD" style="width:64px;height:64px;border-radius:14px"></div>
+<!-- LOGIN -->
+<div id="loginO">
+<div class="lbox">
+  <div style="text-align:center;margin-bottom:12px"><img src="https://raw.githubusercontent.com/td-denki/support-tools/main/logo_1.png" alt="tD" style="width:56px;height:56px;border-radius:12px"></div>
   <h2>試験サポート</h2>
   <div class="brand">匡電気管理事務所</div>
-  <div class="err" id="loginErr"></div>
-  <input id="lUser" placeholder="アカウント名" autocomplete="username">
-  <input id="lPass" type="password" placeholder="パスワード" autocomplete="current-password">
-  <button class="btn" id="loginBtn">ログイン</button>
-  <div style="text-align:center">
-    <span class="link" id="showChgPw">パスワード変更</span>
-    <span class="link" id="showRstPw">パスワード再発行</span>
-  </div>
+  <div class="err" id="lErr"></div>
+  <input id="lU" placeholder="アカウント名" autocomplete="username">
+  <input id="lP" type="password" placeholder="パスワード" autocomplete="current-password">
+  <button class="btn" id="lBtn">ログイン</button>
+  <div style="text-align:center"><span class="link" id="shChg">パスワード変更</span><span class="link" id="shRst">パスワード再発行</span></div>
 </div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <header>
-  <div class="left"><img src="https://raw.githubusercontent.com/td-denki/support-tools/main/logo_1.png" alt="tD" class="logo"><div><div class="brand">匡電気管理事務所</div><h1>試験サポート</h1></div></div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <button class="save-btn" id="saveAllBtn" onclick="saveAll()">💾 保存</button>
-    <div class="user" id="hUser"></div>
+  <div class="left">
+    <img src="https://raw.githubusercontent.com/td-denki/support-tools/main/logo_1.png" alt="tD" class="logo">
+    <div><div class="brand">匡電気管理事務所</div><h1>試験サポート</h1></div>
+  </div>
+  <div class="right">
+    <button class="save-btn" onclick="saveAll()">💾 保存</button>
+    <div class="user-label" id="hU"></div>
   </div>
 </header>
 
 <main>
-<!-- ===== 1. 耐圧10分タイマー ===== -->
-<section class="page on" id="pg-t10">
-  <div class="card">
-    <div class="card-title">耐圧試験タイマー <span class="tag">10:00</span></div>
-    <div class="card-sub">1分・5分・9分で値入力欄あり。通知＋チャイム＋バイブ。</div>
-    <div class="tdisp" id="t10d">00:00</div>
-    <div class="tstate" id="t10s">開始待ち</div>
-    <div class="rail" id="t10rail">
-      <div class="cp" data-cp="0">0</div><div class="seg" data-seg="0"></div>
-      <div class="cp" data-cp="1">1</div><div class="seg" data-seg="1"></div>
-      <div class="cp" data-cp="5">5</div><div class="seg" data-seg="2"></div>
-      <div class="cp" data-cp="9">9</div><div class="seg" data-seg="3"></div>
-      <div class="cp" data-cp="10">10</div>
-    </div>
-    <div class="tbtns">
-      <button class="go" id="t10go">スタート</button>
-      <button class="rst" id="t10rst">リセット</button>
-    </div>
-    <div class="alertlog" id="t10log"></div>
-  </div>
-
-  <!-- 耐圧試験 計測値入力 -->
-  <div class="card">
-    <div class="card-title">耐圧試験 計測値記録</div>
-    <div class="card-sub">タイマー経過時の漏れ電流(mA)等を記録します。</div>
-    <div class="frow"><label>試験前 絶縁抵抗</label><input type="number" id="tv_preIns" inputmode="decimal" placeholder="MΩ"><span class="unit">MΩ</span></div>
-    <hr class="sep">
-    <div class="frow"><label>1分経過時</label><input type="number" id="tv_1m" inputmode="decimal" placeholder="mA"><span class="unit">mA</span></div>
-    <div class="frow"><label>5分経過時</label><input type="number" id="tv_5m" inputmode="decimal" placeholder="mA"><span class="unit">mA</span></div>
-    <div class="frow"><label>9分経過時</label><input type="number" id="tv_9m" inputmode="decimal" placeholder="mA"><span class="unit">mA</span></div>
-    <hr class="sep">
-    <div class="frow"><label>試験後 絶縁抵抗</label><input type="number" id="tv_postIns" inputmode="decimal" placeholder="MΩ"><span class="unit">MΩ</span></div>
-    <div class="copybar"><button onclick="copyTaiatu()">耐圧試験結果をコピー</button></div>
+<!-- ===== 1. OCR ===== -->
+<section class="page on" id="pg-ocr">
+  <div class="cd">
+    <div class="cd-t">過電流継電器 動作時間計算 <span class="tg">OCR</span></div>
+    <div class="cd-s">MOC-A1シリーズ (JIS C 4602) の限時要素特性</div>
+    <div class="fr"><label>限時特性</label>
+      <select id="oc_ch"><option value="EI">EI：超反限時</option><option value="VI">VI：強反限時</option><option value="NI">NI：反限時</option><option value="DT">DT：定限時</option></select></div>
+    <div class="fr"><label>限時電流整定</label><input type="number" id="oc_tap" inputmode="decimal" step="0.1" value="5"><span class="u">A</span></div>
+    <div class="fr"><label>タイムレバー(D)</label><input type="number" id="oc_dial" inputmode="decimal" step="0.1" value="10"></div>
+    <button style="width:100%;padding:11px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-top:4px" onclick="calcOCR()">計算</button>
+    <div id="ocrF" style="margin-top:8px;font-size:11px;color:var(--sub);font-family:var(--mono);text-align:center"></div>
+    <table class="rt" id="ocrR" style="display:none"><thead><tr><th>倍率</th><th>電流(A)</th><th>動作時間(s)</th></tr></thead><tbody id="ocrB"></tbody></table>
+    <div class="sv"><button onclick="cloudSave('ocr')">☁️ Driveに保存</button></div>
   </div>
 </section>
 
-<!-- ===== 2. 300秒タイマー ===== -->
-<section class="page" id="pg-t300">
-  <div class="card">
-    <div class="card-title">300秒タイマー <span class="tag">05:00</span></div>
-    <div class="card-sub">カウントダウン。残り0秒でアラート。</div>
-    <div class="tdisp" id="t300d">05:00</div>
-    <div class="tstate" id="t300s">開始待ち</div>
-    <div class="tbtns">
-      <button class="go" id="t300go">スタート</button>
-      <button class="rst" id="t300rst">リセット</button>
+<!-- ===== 2. タイマー ===== -->
+<section class="page" id="pg-tmr">
+  <div id="wxTmr" class="wx" style="display:none"><span class="wicon"></span><div class="wdata"></div></div>
+  <div class="stabs">
+    <button class="on" onclick="stab(this,'st-t10')">⏱ 耐圧10分</button>
+    <button onclick="stab(this,'st-cd')">⏲ カウントダウン</button>
+    <button onclick="stab(this,'st-sw')">🔄 ストップウォッチ</button>
+  </div>
+  <button style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:11px;color:var(--sub);cursor:pointer;margin-bottom:8px" onclick="getWeather('wxTmr')">📍 現在地の気象情報を取得</button>
+
+  <!-- 耐圧10分 -->
+  <div class="spane on" id="st-t10">
+    <div class="cd">
+      <div class="cd-t">耐圧試験タイマー <span class="tg">10:00</span></div>
+      <div class="td" id="t10d">00:00</div>
+      <div class="ts" id="t10s">開始待ち</div>
+      <div class="rail" id="t10rail">
+        <div class="cp" data-cp="0">0</div><div class="sg" data-sg="0"></div>
+        <div class="cp" data-cp="1">1</div><div class="sg" data-sg="1"></div>
+        <div class="cp" data-cp="5">5</div><div class="sg" data-sg="2"></div>
+        <div class="cp" data-cp="9">9</div><div class="sg" data-sg="3"></div>
+        <div class="cp" data-cp="10">10</div>
+      </div>
+      <div class="tb"><button class="go" id="t10go">スタート</button><button class="rst" id="t10rst">リセット</button></div>
+      <div class="alog" id="t10log"></div>
+    </div>
+    <div class="cd">
+      <div class="cd-t">耐圧試験 計測値記録</div>
+      <div class="fr"><label>試験前 絶縁抵抗</label><input type="number" id="tv_pre" inputmode="decimal" placeholder="MΩ"><span class="u">MΩ</span></div>
+      <hr class="sep">
+      <div style="font-size:11px;font-weight:700;color:var(--sub);margin-bottom:4px">▼ 1分経過時</div>
+      <div class="fr"><label>1次電流</label><input type="number" id="tv_1m_1" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <div class="fr"><label>2次電流</label><input type="number" id="tv_1m_2" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <div style="font-size:11px;font-weight:700;color:var(--sub);margin:6px 0 4px">▼ 5分経過時</div>
+      <div class="fr"><label>1次電流</label><input type="number" id="tv_5m_1" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <div class="fr"><label>2次電流</label><input type="number" id="tv_5m_2" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <div style="font-size:11px;font-weight:700;color:var(--sub);margin:6px 0 4px">▼ 9分経過時</div>
+      <div class="fr"><label>1次電流</label><input type="number" id="tv_9m_1" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <div class="fr"><label>2次電流</label><input type="number" id="tv_9m_2" inputmode="decimal" placeholder="mA"><span class="u">mA</span></div>
+      <hr class="sep">
+      <div class="fr"><label>試験後 絶縁抵抗</label><input type="number" id="tv_post" inputmode="decimal" placeholder="MΩ"><span class="u">MΩ</span></div>
+      <div class="sv"><button onclick="cloudSave('taiatu')">☁️ Driveに保存</button></div>
+    </div>
+  </div>
+
+  <!-- カウントダウン -->
+  <div class="spane" id="st-cd">
+    <div class="cd">
+      <div class="cd-t">カウントダウンタイマー</div>
+      <div class="cd-s">1分ごとにアラーム回数が増加。スリープ中も通知。</div>
+      <div class="fr"><label>時間設定</label><input type="number" id="cdSet" value="300" inputmode="numeric"><span class="u">秒</span></div>
+      <div class="td" id="cdd">05:00</div>
+      <div class="ts" id="cds">開始待ち</div>
+      <div class="tb"><button class="go" id="cdgo">スタート</button><button class="rst" id="cdrst">リセット</button></div>
+    </div>
+  </div>
+
+  <!-- ストップウォッチ -->
+  <div class="spane" id="st-sw">
+    <div class="cd">
+      <div class="cd-t">ストップウォッチ</div>
+      <div class="td" id="swd">00:00.00</div>
+      <div class="tb">
+        <button class="go" id="swgo">スタート</button>
+        <button class="rst" id="swlap">ラップ</button>
+        <button class="rst" id="swrst">リセット</button>
+      </div>
+      <div class="alog" id="swlaps"></div>
     </div>
   </div>
 </section>
 
-<!-- ===== 3. 絶縁抵抗 ===== -->
-<section class="page" id="pg-ins">
-  <div class="card">
-    <div class="card-title">絶縁抵抗測定</div>
-    <div class="card-sub">PCSグループごとに入力。測定値≧基準値で OK。</div>
-    <div id="insGroups"></div>
-    <div class="rowbtns"><button class="add" id="insAddGrp">＋ グループ追加</button></div>
-    <div class="copybar"><button onclick="copyIns()">絶縁抵抗の結果をコピー</button></div>
+<!-- ===== 3. 測定 ===== -->
+<section class="page" id="pg-msr">
+  <div id="wxMsr" class="wx" style="display:none"><span class="wicon"></span><div class="wdata"></div></div>
+  <div class="stabs">
+    <button class="on" onclick="stab(this,'ms-ins')">📏 絶縁抵抗</button>
+    <button onclick="stab(this,'ms-ear')">🌏 接地抵抗</button>
+    <button onclick="stab(this,'ms-pv')">☀️ 太陽光</button>
+  </div>
+  <button style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:11px;color:var(--sub);cursor:pointer;margin-bottom:8px" onclick="getWeather('wxMsr')">📍 現在地の気象情報を取得</button>
+
+  <!-- 絶縁抵抗 -->
+  <div class="spane on" id="ms-ins">
+    <div class="cd">
+      <div class="cd-t">絶縁抵抗測定</div>
+      <div id="insG"></div>
+      <div class="rb"><button class="add" onclick="insAddGrp()">＋ グループ</button></div>
+      <div class="sv"><button onclick="cloudSave('ins')">☁️ Driveに保存</button></div>
+    </div>
+  </div>
+  <!-- 接地抵抗 -->
+  <div class="spane" id="ms-ear">
+    <div class="cd">
+      <div class="cd-t">接地抵抗測定</div>
+      <table class="mt"><thead><tr><th style="width:22%">箇所</th><th style="width:14%">種別</th><th style="width:17%">基準Ω</th><th style="width:20%">測定値Ω</th><th>判定</th></tr></thead><tbody id="earB"></tbody></table>
+      <div class="rb"><button class="add" onclick="earB.appendChild(earRow())">＋ 行</button><button class="del" onclick="earB.rows.length>1&&earB.deleteRow(-1)">− 行</button></div>
+      <div class="sv"><button onclick="cloudSave('ear')">☁️ Driveに保存</button></div>
+    </div>
+  </div>
+  <!-- 太陽光 -->
+  <div class="spane" id="ms-pv">
+    <div class="cd">
+      <div class="cd-t">太陽光パネル 試験電圧計算</div>
+      <div class="cd-s">開放電圧 × 直列枚数 → ×1.5 = 試験電圧</div>
+      <div class="fr"><label>パネル開放電圧</label><input type="number" id="pv_v" inputmode="decimal" step="0.1" oninput="pvCalc()"><span class="u">V</span></div>
+      <div class="fr"><label>直列枚数</label><input type="number" id="pv_n" inputmode="numeric" oninput="pvCalc()"><span class="u">枚</span></div>
+      <hr class="sep">
+      <div class="fr"><label>ストリング電圧</label><input type="text" id="pv_s" readonly style="background:var(--green-bg);font-weight:700"><span class="u">V</span></div>
+      <div class="fr"><label>試験電圧(×1.5)</label><input type="text" id="pv_t" readonly style="background:var(--amber-bg);font-weight:700"><span class="u">V</span></div>
+      <div class="sv"><button onclick="cloudSave('pv')">☁️ Driveに保存</button></div>
+    </div>
   </div>
 </section>
 
-<!-- ===== 4. 接地抵抗 ===== -->
-<section class="page" id="pg-ear">
-  <div class="card">
-    <div class="card-title">接地抵抗測定</div>
-    <div class="card-sub">種別選択で基準値自動セット。測定値≦基準値で OK。</div>
-    <table class="mtable"><thead><tr>
-      <th style="width:24%">測定箇所</th><th style="width:16%">種別</th><th style="width:18%">基準Ω</th><th style="width:22%">測定値Ω</th><th>判定</th>
-    </tr></thead><tbody id="earBody"></tbody></table>
-    <div class="rowbtns">
-      <button class="add" id="earAdd">＋ 行追加</button>
-      <button class="del" id="earDel">最終行削除</button>
-    </div>
-    <div class="copybar"><button onclick="copyEar()">接地抵抗の結果をコピー</button></div>
-  </div>
-</section>
-
-<!-- ===== 5. 計算ツール（OCR ＋ 太陽光試験電圧） ===== -->
-<section class="page" id="pg-calc">
-  <!-- 太陽光試験電圧 -->
-  <div class="card">
-    <div class="card-title">太陽光パネル 試験電圧計算</div>
-    <div class="card-sub">開放電圧 × 直列枚数 = ストリング電圧 → ×1.5 = 試験電圧</div>
-    <div class="frow"><label>パネル開放電圧</label><input type="number" id="pv_voc" inputmode="decimal" step="0.1" placeholder="Voc"><span class="unit">V</span></div>
-    <div class="frow"><label>直列枚数</label><input type="number" id="pv_n" inputmode="numeric" placeholder="枚"><span class="unit">枚</span></div>
-    <hr class="sep">
-    <div class="frow"><label>ストリング開放電圧</label><input type="text" id="pv_str" readonly style="background:var(--green-bg);font-weight:700"><span class="unit">V</span></div>
-    <div class="frow"><label>試験電圧(×1.5)</label><input type="text" id="pv_test" readonly style="background:var(--amber-bg);font-weight:700"><span class="unit">V</span></div>
-  </div>
-
-  <!-- OCR動作時間計算 -->
-  <div class="card">
-    <div class="card-title">過電流継電器 動作時間計算 <span class="tag">OCR</span></div>
-    <div class="card-sub">MOC-A1シリーズ (JIS C 4602) の限時要素特性を計算します。</div>
-    <div class="frow">
-      <label>限時特性</label>
-      <select id="ocr_char">
-        <option value="EI">EI：超反限時</option>
-        <option value="VI">VI：強反限時</option>
-        <option value="NI">NI：反限時</option>
-        <option value="DT">DT：定限時</option>
-      </select>
-    </div>
-    <div class="frow"><label>限時電流整定</label>
-      <select id="ocr_tap">
-        <option>3</option><option>3.5</option><option>4</option><option>4.5</option><option selected>5</option><option>6</option>
-      </select><span class="unit">A</span>
-    </div>
-    <div class="frow"><label>タイムレバー(D)</label>
-      <select id="ocr_dial">
-        <option>0.25</option><option>0.5</option><option>1</option><option>1.5</option><option>2</option><option>2.5</option>
-        <option>3</option><option>3.5</option><option>4</option><option>5</option><option>6</option><option>7</option>
-        <option>8</option><option>9</option><option selected>10</option><option>20</option>
-      </select>
-    </div>
-    <button class="btn" style="width:100%;padding:13px;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-top:4px" onclick="calcOCR()">計算</button>
-
-    <div id="ocrFormula" style="margin-top:10px;font-size:12px;color:var(--sub);font-family:var(--mono);text-align:center"></div>
-    <table class="rtable" id="ocrResult" style="display:none">
-      <thead><tr><th>入力倍率</th><th>入力電流(A)</th><th>動作時間(s)</th></tr></thead>
-      <tbody id="ocrBody"></tbody>
-    </table>
-    <div class="copybar" style="margin-top:8px"><button onclick="copyOCR()">OCR計算結果をコピー</button></div>
-  </div>
-</section>
-
-<!-- ===== 6. ツール（電卓＋カメラ） ===== -->
+<!-- ===== 4. ツール ===== -->
 <section class="page" id="pg-tool">
-  <!-- 電卓 -->
-  <div class="card">
-    <div class="card-title">電卓</div>
-    <div class="cdisp"><span class="expr" id="cExpr"></span><span id="cMain">0</span></div>
-    <div class="ckeys" id="cKeys">
-      <button class="fn" data-k="C">C</button><button class="fn" data-k="←">←</button><button class="fn" data-k="√">√</button><button class="op" data-k="÷">÷</button>
-      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="op" data-k="×">×</button>
-      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="op" data-k="−">−</button>
-      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="op" data-k="＋">＋</button>
-      <button data-k="0" class="wide">0</button><button data-k=".">.</button><button class="eq" data-k="=">=</button>
-      <button class="fn wide" data-k="%">%</button><button class="fn wide" data-k="±">±</button>
+  <div class="stabs">
+    <button class="on" onclick="stab(this,'tl-calc')">🧮 関数電卓</button>
+    <button onclick="stab(this,'tl-angle')">📐 角度計</button>
+    <button onclick="stab(this,'tl-level')">⚖️ 水平器</button>
+  </div>
+  <!-- 関数電卓 -->
+  <div class="spane on" id="tl-calc">
+    <div class="cd">
+      <div class="cdisp"><span class="expr" id="cE"></span><span id="cM">0</span></div>
+      <div class="ck" id="cK">
+        <button class="fn" data-k="sin">sin</button><button class="fn" data-k="cos">cos</button><button class="fn" data-k="tan">tan</button><button class="fn" data-k="π">π</button><button class="fn" data-k="e">e</button>
+        <button class="fn" data-k="log">log</button><button class="fn" data-k="ln">ln</button><button class="fn" data-k="x²">x²</button><button class="fn" data-k="√">√</button><button class="fn" data-k="^">x^y</button>
+        <button class="fn" data-k="C">C</button><button class="fn" data-k="←">←</button><button class="fn" data-k="(">(</button><button class="fn" data-k=")">)</button><button class="op" data-k="÷">÷</button>
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="op" data-k="×">×</button><button class="op" data-k="−">−</button>
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="op" data-k="＋">＋</button><button class="fn" data-k="±">±</button>
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k=".">.</button><button class="eq" data-k="=">=</button>
+        <button data-k="0" class="w2">0</button><button class="fn" data-k="%">%</button><button class="fn w2" data-k="DEG">DEG</button>
+      </div>
     </div>
   </div>
+  <!-- 角度計 -->
+  <div class="spane" id="tl-angle">
+    <div class="cd">
+      <div class="cd-t">📐 角度計（傾斜計）</div>
+      <div class="cd-s">端末の傾きを検出します。</div>
+      <div class="sensor-disp"><div class="sensor-val" id="angVal">0.0</div><div class="sensor-unit">°</div></div>
+      <div class="sensor-bar"><div class="sensor-dot" id="angDot" style="left:50%"></div></div>
+      <div class="tb" style="margin-top:10px"><button class="rst" onclick="angZero()">0点調整</button><button class="go" onclick="startSensor()">測定開始</button></div>
+    </div>
+  </div>
+  <!-- 水平器 -->
+  <div class="spane" id="tl-level">
+    <div class="cd">
+      <div class="cd-t">⚖️ 水平器</div>
+      <div class="cd-s">気泡が中心に来れば水平です。</div>
+      <div class="level-wrap" id="lvlWrap"><div class="level-cross"></div><div class="level-bubble" id="lvlBub"></div></div>
+      <div style="text-align:center;margin-top:6px;font-family:var(--mono);font-size:13px">X: <span id="lvlX">0.0</span>° / Y: <span id="lvlY">0.0</span>°</div>
+      <div class="tb" style="margin-top:10px"><button class="rst" onclick="lvlZero()">0点調整</button><button class="go" onclick="startSensor()">測定開始</button></div>
+    </div>
+  </div>
+</section>
 
-  <!-- カメラ -->
-  <div class="card">
-    <div class="card-title">📸 カメラ</div>
-    <div class="card-sub">現場写真を撮影。撮影画像はタップでダウンロード。</div>
-    <div class="cam-wrap">
-      <video id="camVideo" autoplay playsinline muted style="display:none"></video>
-      <canvas id="camCanvas" style="display:none"></canvas>
-    </div>
+<!-- ===== 5. カメラ ===== -->
+<section class="page" id="pg-cam">
+  <div class="cd">
+    <div class="cd-t">📸 カメラ</div>
+    <div class="cam-wrap"><video id="camV" autoplay playsinline muted style="display:none"></video><canvas id="camC" style="display:none"></canvas></div>
     <div class="cam-btns">
-      <button id="camStart">カメラ起動</button>
-      <button class="shoot" id="camShoot" style="display:none">撮影</button>
-      <button id="camSwitch" style="display:none">切替</button>
+      <button id="camOn">カメラ起動</button>
+      <button class="shoot" id="camSh" style="display:none">撮影</button>
+      <button id="camSw" style="display:none">切替</button>
     </div>
-    <div class="photos" id="camPhotos"></div>
+    <div class="photos" id="camPh"></div>
   </div>
 </section>
 </main>
 
 <nav>
-  <button class="on" data-pg="pg-t10"><span class="ic">⏱</span>耐圧</button>
-  <button data-pg="pg-t300"><span class="ic">⏲</span>300秒</button>
-  <button data-pg="pg-ins"><span class="ic">📏</span>絶縁</button>
-  <button data-pg="pg-ear"><span class="ic">🌏</span>接地</button>
-  <button data-pg="pg-calc"><span class="ic">⚡</span>計算</button>
+  <button class="on" data-pg="pg-ocr"><span class="ic">⚡</span>OCR</button>
+  <button data-pg="pg-tmr"><span class="ic">⏱</span>タイマー</button>
+  <button data-pg="pg-msr"><span class="ic">📏</span>測定</button>
   <button data-pg="pg-tool"><span class="ic">🔧</span>ツール</button>
+  <button data-pg="pg-cam"><span class="ic">📸</span>カメラ</button>
 </nav>
 
 <div id="toasts"></div>
-
-<!-- 保存進捗 -->
-<div id="saveProgress">
-  <div class="save-modal">
-    <h3>📁 Google Driveに保存中…</h3>
-    <div class="status" id="saveStatus">準備中…</div>
-    <div class="bar-wrap"><div class="bar-fill" id="saveBar"></div></div>
-    <button class="done-btn" id="saveDone" onclick="document.getElementById('saveProgress').classList.remove('on')">閉じる</button>
-  </div>
-</div>
-
-<!-- 写真枚数バッジ -->
-<div class="photo-badge" id="photoBadge">📷 0枚</div>
+<div id="saveP"><div class="spm"><h3>☁️ Driveに保存中…</h3><div class="st" id="svSt">準備中…</div><div class="bw"><div class="bf" id="svBr"></div></div><button class="dn" id="svDn" onclick="document.getElementById('saveP').classList.remove('on')">閉じる</button></div></div>
 
 <script>
-/* ========== CONFIG ========== */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwnKdbrTn2wiYngjLjpXXNo-UE2-IZf-BhvuoBY69OfsisPOFgH0Q95E0wlUylawhWF/exec';
+const GAS='https://script.google.com/macros/s/AKfycbwnKdbrTn2wiYngjLjpXXNo-UE2-IZf-BhvuoBY69OfsisPOFgH0Q95E0wlUylawhWF/exec';
+let CU='';
 
-/* ========== NOTIFY ========== */
-let audioCtx=null;
-function chime(n){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const t0=audioCtx.currentTime;for(let i=0;i<n;i++){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(.0001,t0+i*.35);g.gain.exponentialRampToValueAtTime(.4,t0+i*.35+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+i*.35+.3);o.connect(g);g.connect(audioCtx.destination);o.start(t0+i*.35);o.stop(t0+i*.35+.32);}}catch(e){}}
-function notify(title,msg,beeps){
-  const box=document.createElement('div');box.className='toast';
-  box.innerHTML='<div class="dot">⚡</div><div><div class="tt"></div><div class="tm"></div></div>';
-  box.querySelector('.tt').textContent=title;box.querySelector('.tm').textContent=msg;
-  document.getElementById('toasts').appendChild(box);setTimeout(()=>box.remove(),6000);
-  chime(beeps||2);if(navigator.vibrate)navigator.vibrate([200,100,200]);
-  if('Notification'in window&&Notification.permission==='granted')try{new Notification(title,{body:msg})}catch(e){}
-}
+/* === NOTIFY === */
+let ac=null;
+function chime(n){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime;for(let i=0;i<n;i++){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(.0001,t+i*.35);g.gain.exponentialRampToValueAtTime(.4,t+i*.35+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.35+.3);o.connect(g);g.connect(ac.destination);o.start(t+i*.35);o.stop(t+i*.35+.32);}}catch(e){}}
+function notify(t,m,b){const x=document.createElement('div');x.className='toast';x.innerHTML='<div class="dot">⚡</div><div><div class="tt"></div><div class="tm"></div></div>';x.querySelector('.tt').textContent=t;x.querySelector('.tm').textContent=m;document.getElementById('toasts').appendChild(x);setTimeout(()=>x.remove(),5000);chime(b||2);if(navigator.vibrate)navigator.vibrate([200,100,200]);if('Notification'in window&&Notification.permission==='granted')try{new Notification(t,{body:m})}catch(e){}}
 
-/* ========== LOGIN ========== */
-let currentUser='';
-(function initLogin(){
-  const s=localStorage.getItem('shiken_sess');
-  if(s){try{const d=JSON.parse(s);if(Date.now()-d.t<7*86400000){loginOk(d.user,d.admin);return;}}catch(e){}}
-  document.getElementById('loginOverlay').style.display='flex';
-})();
+/* === LOGIN === */
+(function(){const s=localStorage.getItem('shiken_s');if(s){try{const d=JSON.parse(s);if(Date.now()-d.t<7*864e5){loginOk(d.user,d.admin);return;}}catch(e){}}document.getElementById('loginO').style.display='flex';})();
+document.getElementById('lBtn').onclick=async()=>{const u=document.getElementById('lU').value.trim(),p=document.getElementById('lP').value.trim();if(!u||!p){sErr('lErr','入力してください');return;}try{const r=await gp({action:'login',user:u,pass:p});if(r.ok){localStorage.setItem('shiken_s',JSON.stringify({user:r.user,admin:r.admin,t:Date.now()}));loginOk(r.user,r.admin);}else sErr('lErr',r.msg);}catch(e){sErr('lErr','通信エラー');}};
+function loginOk(u,a){CU=u;document.getElementById('loginO').style.display='none';document.getElementById('hU').innerHTML=(a?'<span style="background:var(--amber);color:#fff;padding:1px 4px;border-radius:3px;font-size:8px;margin-right:2px">ADMIN</span>':'')+'<b>'+u+'</b>';}
+function sErr(id,m){document.getElementById(id).textContent=m;}
+async function gp(b){const r=await fetch(GAS,{method:'POST',body:JSON.stringify(b)});return r.json();}
+document.getElementById('shChg').onclick=()=>showMdl('chg');
+document.getElementById('shRst').onclick=()=>showMdl('rst');
+function showMdl(t){const e=document.querySelector('.mbg');if(e)e.remove();const bg=document.createElement('div');bg.className='mbg';if(t==='chg'){bg.innerHTML='<div class="mdl"><h3>パスワード変更</h3><div class="err" id="mE"></div><div class="ok-msg" id="mO"></div><input id="mU" placeholder="アカウント名"><input id="mOp" type="password" placeholder="現在のパスワード"><input id="mNp" type="password" placeholder="新しいパスワード"><input id="mN2" type="password" placeholder="確認"><button class="btn" id="mCb">変更</button><button class="btn cancel" onclick="this.closest(\'.mbg\').remove()">閉じる</button></div>';document.body.appendChild(bg);document.getElementById('mCb').onclick=async()=>{const u=document.getElementById('mU').value.trim(),o=document.getElementById('mOp').value,n=document.getElementById('mNp').value,n2=document.getElementById('mN2').value;if(!u||!o||!n){sErr('mE','全て入力');return;}if(n!==n2){sErr('mE','不一致');return;}try{const r=await gp({action:'changePassword',user:u,oldPass:o,newPass:n});if(r.ok){document.getElementById('mO').textContent=r.msg;sErr('mE','');localStorage.removeItem('shiken_s');}else sErr('mE',r.msg);}catch(e){sErr('mE','通信エラー');}};}else{bg.innerHTML='<div class="mdl"><h3>パスワード再発行</h3><div class="cd-s" style="margin-bottom:6px">共通_社員マスタのK列にメールアドレスを登録してください。</div><div class="err" id="mE"></div><div class="ok-msg" id="mO"></div><input id="mRu" placeholder="アカウント名"><button class="btn" id="mRb">再発行</button><button class="btn cancel" onclick="this.closest(\'.mbg\').remove()">閉じる</button></div>';document.body.appendChild(bg);document.getElementById('mRb').onclick=async()=>{const u=document.getElementById('mRu').value.trim();if(!u){sErr('mE','入力してください');return;}try{const r=await gp({action:'resetPassword',user:u});if(r.ok){document.getElementById('mO').textContent=r.msg;sErr('mE','');}else sErr('mE',r.msg);}catch(e){sErr('mE','通信エラー');}};}}
 
-document.getElementById('loginBtn').onclick=async function(){
-  const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPass').value.trim();
-  if(!u||!p){showErr('loginErr','入力してください');return;}
-  if(!GAS_URL){showErr('loginErr','GAS_URLが未設定です');return;}
-  try{
-    const r=await gasPost({action:'login',user:u,pass:p});
-    if(r.ok){localStorage.setItem('shiken_sess',JSON.stringify({user:r.user,admin:r.admin,t:Date.now()}));loginOk(r.user,r.admin);}
-    else showErr('loginErr',r.msg);
-  }catch(e){showErr('loginErr','通信エラー');}
-};
+/* === NAV === */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById(b.dataset.pg).classList.add('on');});
+function stab(btn,id){btn.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));btn.classList.add('on');const p=btn.closest('.page')||btn.closest('section');p.querySelectorAll('.spane').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');}
 
-function loginOk(user,admin){
-  currentUser=user;
-  document.getElementById('loginOverlay').style.display='none';
-  document.getElementById('hUser').innerHTML=(admin?'<span style="background:var(--amber);color:#fff;padding:1px 5px;border-radius:4px;font-size:9px;margin-right:3px">ADMIN</span>':'')+'<b>'+user+'</b>ログイン中';
-}
+/* === UTIL === */
+function fmt(s){const m=Math.floor(s/60),ss=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+function fmtMs(s){const m=Math.floor(s/60),ss=Math.floor(s%60),ms=Math.floor((s%1)*100);return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0')+'.'+String(ms).padStart(2,'0');}
 
-function showErr(id,msg){document.getElementById(id).textContent=msg;}
+/* === 10分タイマー === */
+const T10={r:false,s:0,a:0,f:{},tk:null};const CP=[1,5,9,10];
+function t10e(){return T10.a+(T10.r?(Date.now()-T10.s)/1000:0);}
+function t10rn(){const e=Math.min(t10e(),600);document.getElementById('t10d').textContent=fmt(e);document.getElementById('t10d').className='td'+(e>=600?' done':(e>=540?' warn':''));document.querySelectorAll('#t10rail .cp').forEach(c=>c.classList.toggle('h',e>=Number(c.dataset.cp)*60));document.querySelectorAll('#t10rail .sg').forEach(s=>{const ends=[1,5,9,10];s.classList.toggle('f',e>=ends[Number(s.dataset.sg)]*60);});CP.forEach(min=>{if(e>=min*60&&!T10.f[min]){T10.f[min]=true;const now=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(min===10){notify('耐圧 10分経過','試験終了！降圧・放電確認',4);document.getElementById('t10s').textContent='試験終了';t10st();}else notify('耐圧 '+min+'分経過','計測値を入力',min===9?3:2);const r=document.createElement('div');r.innerHTML='<b>'+String(min).padStart(2,'0')+':00</b> 通知('+now+')';document.getElementById('t10log').appendChild(r);}});}
+function t10st(){T10.a=Math.min(t10e(),600);T10.r=false;clearInterval(T10.tk);T10.tk=null;document.getElementById('t10go').textContent='スタート';document.getElementById('t10go').classList.remove('p');}
+document.getElementById('t10go').onclick=()=>{if(ac&&ac.state==='suspended')ac.resume();if(T10.r){t10st();document.getElementById('t10s').textContent='一時停止';}else{if(t10e()>=600)return;T10.r=true;T10.s=Date.now();document.getElementById('t10go').textContent='一時停止';document.getElementById('t10go').classList.add('p');document.getElementById('t10s').textContent='測定中…';T10.tk=setInterval(t10rn,200);chime(1);}};
+document.getElementById('t10rst').onclick=()=>{t10st();T10.a=0;T10.f={};document.getElementById('t10log').innerHTML='';document.getElementById('t10s').textContent='開始待ち';t10rn();};
+t10rn();
 
-async function gasPost(body){
-  const r=await fetch(GAS_URL,{method:'POST',body:JSON.stringify(body)});
-  return r.json();
-}
+/* === カウントダウン(毎分アラーム増加) === */
+const CD={r:false,s:0,l:300,tk:null,fm:{}};
+function cdInit(){CD.l=parseInt(document.getElementById('cdSet').value)||300;CD.fm={};document.getElementById('cdd').textContent=fmt(CD.l);document.getElementById('cds').textContent='開始待ち';}
+document.getElementById('cdSet').onchange=cdInit;
+function cdLf(){return CD.r?Math.max(0,CD.l-(Date.now()-CD.s)/1000):CD.l;}
+function cdRn(){const l=cdLf(),el=parseInt(document.getElementById('cdSet').value||300)-l;document.getElementById('cdd').textContent=fmt(l);document.getElementById('cdd').className='td'+(l<=0?' done':(l<=30?' warn':''));
+  // 毎分アラーム
+  const minPassed=Math.floor(el/60);
+  if(minPassed>0&&!CD.fm[minPassed]){CD.fm[minPassed]=true;notify(minPassed+'分経過','',minPassed);}
+  if(l<=0&&!CD.fm['done']){CD.fm['done']=true;notify('タイマー終了','',5);document.getElementById('cds').textContent='終了';cdSt();}}
+function cdSt(){CD.l=cdLf();CD.r=false;clearInterval(CD.tk);CD.tk=null;document.getElementById('cdgo').textContent='スタート';document.getElementById('cdgo').classList.remove('p');}
+document.getElementById('cdgo').onclick=()=>{if(ac&&ac.state==='suspended')ac.resume();if(CD.r){cdSt();document.getElementById('cds').textContent='一時停止';}else{if(CD.l<=0)return;CD.r=true;CD.s=Date.now();document.getElementById('cdgo').textContent='一時停止';document.getElementById('cdgo').classList.add('p');document.getElementById('cds').textContent='カウントダウン中…';CD.tk=setInterval(cdRn,200);chime(1);}};
+document.getElementById('cdrst').onclick=()=>{cdSt();cdInit();};
+cdInit();
 
-/* パスワード変更モーダル */
-document.getElementById('showChgPw').onclick=()=>showModal('changePw');
-document.getElementById('showRstPw').onclick=()=>showModal('resetPw');
+/* スリープ対策: Notification APIで通知 */
+if('Notification'in window&&Notification.permission==='default')setTimeout(()=>Notification.requestPermission(),2000);
 
-function showModal(type){
-  const existing=document.querySelector('.modal-bg');if(existing)existing.remove();
-  const bg=document.createElement('div');bg.className='modal-bg';
-  if(type==='changePw'){
-    bg.innerHTML=`<div class="modal"><h3>パスワード変更</h3>
-      <div class="err" id="mErr"></div><div class="ok-msg" id="mOk"></div>
-      <input id="mUser" placeholder="アカウント名"><input id="mOldPw" type="password" placeholder="現在のパスワード">
-      <input id="mNewPw" type="password" placeholder="新しいパスワード"><input id="mNewPw2" type="password" placeholder="新しいパスワード(確認)">
-      <button class="btn" id="mChgBtn">変更</button><button class="btn cancel" id="mCancel">閉じる</button></div>`;
-    document.body.appendChild(bg);
-    document.getElementById('mCancel').onclick=()=>bg.remove();
-    document.getElementById('mChgBtn').onclick=async()=>{
-      const u=document.getElementById('mUser').value.trim(),o=document.getElementById('mOldPw').value,n=document.getElementById('mNewPw').value,n2=document.getElementById('mNewPw2').value;
-      if(!u||!o||!n){showErr('mErr','全て入力してください');return;}
-      if(n!==n2){showErr('mErr','新しいパスワードが一致しません');return;}
-      if(n.length<4){showErr('mErr','4文字以上にしてください');return;}
-      if(!GAS_URL){showErr('mErr','GAS_URL未設定');return;}
-      try{const r=await gasPost({action:'changePassword',user:u,oldPass:o,newPass:n});
-        if(r.ok){document.getElementById('mOk').textContent=r.msg;document.getElementById('mErr').textContent='';localStorage.removeItem('shiken_sess');}
-        else showErr('mErr',r.msg);
-      }catch(e){showErr('mErr','通信エラー');}
-    };
-  }else{
-    bg.innerHTML=`<div class="modal"><h3>パスワード再発行</h3>
-      <div class="card-sub" style="margin-bottom:8px">事前にスプレッドシートのD列にメールアドレスを登録してください。仮パスワードがメールで届きます。</div>
-      <div class="err" id="mErr"></div><div class="ok-msg" id="mOk"></div>
-      <input id="mRstUser" placeholder="アカウント名">
-      <button class="btn" id="mRstBtn">再発行</button><button class="btn cancel" id="mCancel">閉じる</button></div>`;
-    document.body.appendChild(bg);
-    document.getElementById('mCancel').onclick=()=>bg.remove();
-    document.getElementById('mRstBtn').onclick=async()=>{
-      const u=document.getElementById('mRstUser').value.trim();
-      if(!u){showErr('mErr','アカウント名を入力してください');return;}
-      if(!GAS_URL){showErr('mErr','GAS_URL未設定');return;}
-      try{const r=await gasPost({action:'resetPassword',user:u});
-        if(r.ok){document.getElementById('mOk').textContent=r.msg;document.getElementById('mErr').textContent='';}
-        else showErr('mErr',r.msg);
-      }catch(e){showErr('mErr','通信エラー');}
-    };
-  }
-}
+/* === ストップウォッチ === */
+const SW={r:false,s:0,a:0,tk:null,laps:[]};
+function swE(){return SW.a+(SW.r?(Date.now()-SW.s)/1000:0);}
+function swRn(){document.getElementById('swd').textContent=fmtMs(swE());}
+document.getElementById('swgo').onclick=()=>{if(ac&&ac.state==='suspended')ac.resume();if(SW.r){SW.a=swE();SW.r=false;clearInterval(SW.tk);document.getElementById('swgo').textContent='スタート';document.getElementById('swgo').classList.remove('p');}else{SW.r=true;SW.s=Date.now();document.getElementById('swgo').textContent='ストップ';document.getElementById('swgo').classList.add('p');SW.tk=setInterval(swRn,50);}};
+document.getElementById('swlap').onclick=()=>{if(!SW.r)return;const t=swE();SW.laps.push(t);const d=document.createElement('div');d.innerHTML='<b>Lap'+SW.laps.length+'</b> '+fmtMs(t);document.getElementById('swlaps').prepend(d);};
+document.getElementById('swrst').onclick=()=>{SW.a=0;SW.r=false;clearInterval(SW.tk);SW.laps=[];document.getElementById('swd').textContent='00:00.00';document.getElementById('swgo').textContent='スタート';document.getElementById('swgo').classList.remove('p');document.getElementById('swlaps').innerHTML='';};
 
-/* ========== TAB NAV ========== */
-document.querySelectorAll('nav button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');document.getElementById(b.dataset.pg).classList.add('on');
-  });
-});
-
-/* ========== UTIL ========== */
-function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
-function copyText(text,msg){
-  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(()=>notify(msg,'LINEに貼り付けて共有できます',1)).catch(()=>fbCopy(text,msg));
-  else fbCopy(text,msg);
-}
-function fbCopy(t,m){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');notify(m,'',1);}catch(e){alert(t);}a.remove();}
-
-/* ========== 10分タイマー ========== */
-const T10={run:false,start:0,acc:0,fired:{},tick:null};
-const t10d=document.getElementById('t10d'),t10s=document.getElementById('t10s'),t10go=document.getElementById('t10go'),t10log=document.getElementById('t10log');
-const CP=[1,5,9,10];
-function t10elapsed(){return T10.acc+(T10.run?(Date.now()-T10.start)/1000:0);}
-function t10render(){
-  const e=Math.min(t10elapsed(),600);
-  t10d.textContent=fmt(e);t10d.className='tdisp'+(e>=600?' done':(e>=540?' warn':''));
-  document.querySelectorAll('#t10rail .cp').forEach(c=>{c.classList.toggle('hit',e>=Number(c.dataset.cp)*60);});
-  document.querySelectorAll('#t10rail .seg').forEach(s=>{const ends=[1,5,9,10];s.classList.toggle('fill',e>=ends[Number(s.dataset.seg)]*60);});
-  CP.forEach(min=>{
-    if(e>=min*60&&!T10.fired[min]){
-      T10.fired[min]=true;
-      const now=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      if(min===10){notify('耐圧試験 10分経過','試験終了！降圧・放電を確認',4);t10s.textContent='試験終了（10分経過）';t10stop();}
-      else notify('耐圧試験 '+min+'分経過','計測値を入力してください',min===9?3:2);
-      const row=document.createElement('div');row.innerHTML='<b>'+String(min).padStart(2,'0')+':00</b>　通知（'+now+'）';t10log.appendChild(row);
-    }
-  });
-}
-function t10stop(){T10.acc=Math.min(t10elapsed(),600);T10.run=false;clearInterval(T10.tick);T10.tick=null;t10go.textContent='スタート';t10go.classList.remove('pause');}
-t10go.onclick=()=>{
-  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
-  if(T10.run){t10stop();t10s.textContent='一時停止 '+fmt(T10.acc);}
-  else{if(t10elapsed()>=600)return;T10.run=true;T10.start=Date.now();t10go.textContent='一時停止';t10go.classList.add('pause');t10s.textContent='測定中…';T10.tick=setInterval(t10render,200);chime(1);}
-};
-document.getElementById('t10rst').onclick=()=>{t10stop();T10.acc=0;T10.fired={};t10log.innerHTML='';t10s.textContent='開始待ち';t10render();};
-t10render();
-
-function copyTaiatu(){
-  const d=new Date();
-  let o='【耐圧試験】'+d.toLocaleDateString('ja-JP')+'\n';
-  o+='■試験前 絶縁抵抗: '+(document.getElementById('tv_preIns').value||'—')+'MΩ\n';
-  o+='■1分経過: '+(document.getElementById('tv_1m').value||'—')+'mA\n';
-  o+='■5分経過: '+(document.getElementById('tv_5m').value||'—')+'mA\n';
-  o+='■9分経過: '+(document.getElementById('tv_9m').value||'—')+'mA\n';
-  o+='■試験後 絶縁抵抗: '+(document.getElementById('tv_postIns').value||'—')+'MΩ\n';
-  copyText(o,'耐圧試験結果をコピーしました');
-}
-
-/* ========== 300秒タイマー ========== */
-const T3={run:false,start:0,left:300,tick:null,fired:false};
-const t300d=document.getElementById('t300d'),t300s=document.getElementById('t300s'),t300go=document.getElementById('t300go');
-function t3left(){return T3.run?Math.max(0,T3.left-(Date.now()-T3.start)/1000):T3.left;}
-function t3render(){
-  const l=t3left();t300d.textContent=fmt(l);t300d.className='tdisp'+(l<=0?' done':(l<=30?' warn':''));
-  if(l<=0&&!T3.fired){T3.fired=true;notify('300秒経過','タイマー終了',4);t300s.textContent='終了';t3stop();}
-}
-function t3stop(){T3.left=t3left();T3.run=false;clearInterval(T3.tick);T3.tick=null;t300go.textContent='スタート';t300go.classList.remove('pause');}
-t300go.onclick=()=>{
-  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
-  if(T3.run){t3stop();t300s.textContent='一時停止 '+fmt(T3.left);}
-  else{if(T3.left<=0)return;T3.run=true;T3.start=Date.now();t300go.textContent='一時停止';t300go.classList.add('pause');t300s.textContent='カウントダウン中…';T3.tick=setInterval(t3render,200);chime(1);}
-};
-document.getElementById('t300rst').onclick=()=>{t3stop();T3.left=300;T3.fired=false;t300s.textContent='開始待ち';t3render();};
-t3render();
-
-/* ========== 絶縁抵抗 ========== */
+/* === 絶縁抵抗 === */
 const INS_PLC=['PCS入力側 P-E','PCS入力側 N-E','PCS出力側 U-E','PCS出力側 V-E','PCS出力側 W-E','接続箱 P-E','接続箱 N-E','集電箱','低圧幹線','その他'];
 const INS_V=['1000V','500V','250V'];const INS_REF=['1.0','0.4','0.2','0.1'];
-let grpSeq=0;
-function insJudge(inp){
-  const tr=inp.closest('tr'),ref=parseFloat(tr.querySelector('.ref').value),val=parseFloat(tr.querySelector('.val').value),jd=tr.querySelector('.jd'),vi=tr.querySelector('.val');
-  vi.classList.remove('ok','ng');
-  if(isNaN(val)||isNaN(ref)){jd.textContent='—';jd.className='jd na';return;}
-  if(val>=ref){jd.textContent='OK';jd.className='jd ok';vi.classList.add('ok');}else{jd.textContent='NG';jd.className='jd ng';vi.classList.add('ng');}
-}
-function insRow(){
-  const tr=document.createElement('tr');
-  tr.innerHTML='<td><select class="plc">'+INS_PLC.map(p=>'<option>'+p+'</option>').join('')+'</select></td>'
-    +'<td><select class="tv">'+INS_V.map(v=>'<option>'+v+'</option>').join('')+'</select></td>'
-    +'<td><select class="ref">'+INS_REF.map(r=>'<option>'+r+'</option>').join('')+'</select></td>'
-    +'<td><input type="number" class="val" inputmode="decimal" step="0.01" placeholder="MΩ"></td>'
-    +'<td><div class="jd na">—</div></td>';
-  tr.querySelector('.val').oninput=e=>insJudge(e.target);
-  tr.querySelector('.ref').onchange=e=>insJudge(e.target);
-  return tr;
-}
-function insAddGroup(name){
-  grpSeq++;const g=document.createElement('div');g.className='grp';
-  g.innerHTML='<div class="ghead"><input class="grpname" value="'+(name||('PCS'+grpSeq))+'"><button class="gdel">削除</button></div>'
-    +'<table class="mtable"><thead><tr><th style="width:28%">箇所</th><th style="width:16%">電圧</th><th style="width:15%">基準</th><th style="width:22%">測定値</th><th>判定</th></tr></thead><tbody></tbody></table>'
-    +'<div class="rowbtns"><button class="add radd">＋行</button><button class="del rdel">−行</button></div>';
-  const tb=g.querySelector('tbody');for(let i=0;i<2;i++)tb.appendChild(insRow());
-  g.querySelector('.radd').onclick=()=>tb.appendChild(insRow());
-  g.querySelector('.rdel').onclick=()=>{if(tb.rows.length>1)tb.deleteRow(-1);};
-  g.querySelector('.gdel').onclick=()=>{if(confirm('削除しますか？'))g.remove();};
-  document.getElementById('insGroups').appendChild(g);
-}
-document.getElementById('insAddGrp').onclick=()=>insAddGroup();
-insAddGroup('PCS1');
+let gSeq=0;
+function insJ(inp){const tr=inp.closest('tr'),ref=parseFloat(tr.querySelector('.ref').value),val=parseFloat(tr.querySelector('.val').value),jd=tr.querySelector('.jd'),vi=tr.querySelector('.val');vi.classList.remove('ok','ng');if(isNaN(val)||isNaN(ref)){jd.textContent='—';jd.className='jd na';return;}if(val>=ref){jd.textContent='OK';jd.className='jd ok';vi.classList.add('ok');}else{jd.textContent='NG';jd.className='jd ng';vi.classList.add('ng');}}
+function insRow(){const tr=document.createElement('tr');tr.innerHTML='<td><select class="plc">'+INS_PLC.map(p=>'<option>'+p+'</option>').join('')+'</select></td><td><select class="tv">'+INS_V.map(v=>'<option>'+v+'</option>').join('')+'</select></td><td><select class="ref">'+INS_REF.map(r=>'<option>'+r+'</option>').join('')+'</select></td><td><input type="number" class="val" inputmode="decimal" step="0.01" placeholder="MΩ"></td><td><div class="jd na">—</div></td>';tr.querySelector('.val').oninput=e=>insJ(e.target);tr.querySelector('.ref').onchange=e=>insJ(e.target);return tr;}
+function insAddGrp(name){gSeq++;const g=document.createElement('div');g.className='grp';g.innerHTML='<div class="gh"><input class="gn" value="'+(name||('PCS'+gSeq))+'"><button class="gd" onclick="if(confirm(\'削除？\'))this.closest(\'.grp\').remove()">削除</button></div><table class="mt"><thead><tr><th>箇所</th><th>電圧</th><th>基準</th><th>測定値</th><th>判定</th></tr></thead><tbody></tbody></table><div class="rb"><button class="add" onclick="this.closest(\'.grp\').querySelector(\'tbody\').appendChild(insRow())">＋行</button><button class="del" onclick="const tb=this.closest(\'.grp\').querySelector(\'tbody\');if(tb.rows.length>1)tb.deleteRow(-1)">−行</button></div>';const tb=g.querySelector('tbody');for(let i=0;i<2;i++)tb.appendChild(insRow());document.getElementById('insG').appendChild(g);}
+insAddGrp('PCS1');
 
-function copyIns(){
-  const d=new Date();let o='【絶縁抵抗測定】'+d.toLocaleDateString('ja-JP')+'\n';
-  document.querySelectorAll('#insGroups .grp').forEach(g=>{
-    o+='■'+g.querySelector('.grpname').value+'\n';
-    g.querySelectorAll('tbody tr').forEach(tr=>{
-      const v=tr.querySelector('.val').value;if(!v)return;
-      o+='・'+tr.querySelector('.plc').value+'('+tr.querySelector('.tv').value+'): '+v+'MΩ / 基準'+tr.querySelector('.ref').value+'MΩ → '+tr.querySelector('.jd').textContent+'\n';
-    });
-  });
-  copyText(o,'絶縁抵抗の結果をコピーしました');
-}
+/* === 接地抵抗 === */
+const EAR={'A種':'10','B種':'','C種':'10','D種':'100'};
+const earB=document.getElementById('earB');
+function earJ(tr){const ref=parseFloat(tr.querySelector('.ref').value),val=parseFloat(tr.querySelector('.val').value),jd=tr.querySelector('.jd'),vi=tr.querySelector('.val');vi.classList.remove('ok','ng');if(isNaN(val)||isNaN(ref)){jd.textContent='—';jd.className='jd na';return;}if(val<=ref){jd.textContent='OK';jd.className='jd ok';vi.classList.add('ok');}else{jd.textContent='NG';jd.className='jd ng';vi.classList.add('ng');}}
+function earRow(){const tr=document.createElement('tr');tr.innerHTML='<td><input class="plc" placeholder="PCS筐体"></td><td><select class="typ">'+Object.keys(EAR).map(t=>'<option'+(t==='D種'?' selected':'')+'>'+t+'</option>').join('')+'</select></td><td><input type="number" class="ref" inputmode="decimal" value="100"></td><td><input type="number" class="val" inputmode="decimal" step="0.1"></td><td><div class="jd na">—</div></td>';tr.querySelector('.typ').onchange=e=>{tr.querySelector('.ref').value=EAR[e.target.value];earJ(tr);};tr.querySelector('.val').oninput=()=>earJ(tr);tr.querySelector('.ref').oninput=()=>earJ(tr);return tr;}
+for(let i=0;i<2;i++)earB.appendChild(earRow());
 
-/* ========== 接地抵抗 ========== */
-const EAR_TYPE={'A種':'10','B種':'','C種':'10','D種':'100'};
-const earBody=document.getElementById('earBody');
-function earJudge(tr){
-  const ref=parseFloat(tr.querySelector('.ref').value),val=parseFloat(tr.querySelector('.val').value),jd=tr.querySelector('.jd'),vi=tr.querySelector('.val');
-  vi.classList.remove('ok','ng');
-  if(isNaN(val)||isNaN(ref)){jd.textContent='—';jd.className='jd na';return;}
-  if(val<=ref){jd.textContent='OK';jd.className='jd ok';vi.classList.add('ok');}else{jd.textContent='NG';jd.className='jd ng';vi.classList.add('ng');}
-}
-function earRow(){
-  const tr=document.createElement('tr');
-  tr.innerHTML='<td><input class="plc" placeholder="例:PCS筐体"></td>'
-    +'<td><select class="typ">'+Object.keys(EAR_TYPE).map(t=>'<option'+(t==='D種'?' selected':'')+'>'+t+'</option>').join('')+'</select></td>'
-    +'<td><input type="number" class="ref" inputmode="decimal" value="100" placeholder="Ω"></td>'
-    +'<td><input type="number" class="val" inputmode="decimal" step="0.1" placeholder="Ω"></td>'
-    +'<td><div class="jd na">—</div></td>';
-  tr.querySelector('.typ').onchange=e=>{tr.querySelector('.ref').value=EAR_TYPE[e.target.value];earJudge(tr);};
-  tr.querySelector('.val').oninput=()=>earJudge(tr);
-  tr.querySelector('.ref').oninput=()=>earJudge(tr);
-  return tr;
-}
-document.getElementById('earAdd').onclick=()=>earBody.appendChild(earRow());
-document.getElementById('earDel').onclick=()=>{if(earBody.rows.length>1)earBody.deleteRow(-1);};
-for(let i=0;i<2;i++)earBody.appendChild(earRow());
+/* === 太陽光 === */
+function pvCalc(){const v=parseFloat(document.getElementById('pv_v').value),n=parseInt(document.getElementById('pv_n').value);if(isNaN(v)||isNaN(n)||n<=0){document.getElementById('pv_s').value='';document.getElementById('pv_t').value='';return;}const sv=Math.round(v*n*100)/100;document.getElementById('pv_s').value=sv;document.getElementById('pv_t').value=Math.round(sv*1.5*100)/100;}
 
-function copyEar(){
-  const d=new Date();let o='【接地抵抗測定】'+d.toLocaleDateString('ja-JP')+'\n';
-  earBody.querySelectorAll('tr').forEach(tr=>{
-    const v=tr.querySelector('.val').value;if(!v)return;
-    o+='・'+(tr.querySelector('.plc').value||'(無記名)')+'('+tr.querySelector('.typ').value+'): '+v+'Ω / 基準'+tr.querySelector('.ref').value+'Ω以下 → '+tr.querySelector('.jd').textContent+'\n';
-  });
-  copyText(o,'接地抵抗の結果をコピーしました');
-}
+/* === OCR === */
+const OCR_F={EI:'T = 80/(I²−1) × D/10',VI:'T = 13.5/(I−1) × D/10',NI:'T = 0.14/(I^0.02−1) × D/10',DT:'T = 2 × D/10'};
+let lastOCR='';
+function ocrT(c,I,D){switch(c){case'EI':return(80/(I*I-1))*(D/10);case'VI':return(13.5/(I-1))*(D/10);case'NI':return(0.14/(Math.pow(I,0.02)-1))*(D/10);case'DT':return 2*(D/10);default:return 0;}}
+function calcOCR(){const c=document.getElementById('oc_ch').value,tap=parseFloat(document.getElementById('oc_tap').value),d=parseFloat(document.getElementById('oc_dial').value);if(isNaN(tap)||isNaN(d)){notify('値を入力してください','',1);return;}document.getElementById('ocrF').textContent=OCR_F[c]+' (D='+d+')';document.getElementById('ocrR').style.display='';const tb=document.getElementById('ocrB');tb.innerHTML='';let txt='【OCR動作時間】特性:'+c+'/限時電流:'+tap+'A/レバー:'+d+'\n';[200,300,500,700,1000].forEach(p=>{const I=p/100,a=Math.round(tap*I*100)/100,t=Math.round(ocrT(c,I,d)*1000)/1000,hl=(p===300||p===700);const tr=document.createElement('tr');tr.innerHTML='<td'+(hl?' class="hl"':'')+'>'+p+'%</td><td>'+a+'A</td><td'+(hl?' class="hl"':'')+'>'+t+'s</td>';tb.appendChild(tr);txt+=p+'%('+a+'A):'+t+'s\n';});lastOCR=txt;}
 
-/* ========== 太陽光パネル試験電圧計算 ========== */
-document.getElementById('pv_voc').oninput=pvCalc;
-document.getElementById('pv_n').oninput=pvCalc;
-function pvCalc(){
-  const voc=parseFloat(document.getElementById('pv_voc').value),n=parseInt(document.getElementById('pv_n').value);
-  if(isNaN(voc)||isNaN(n)||n<=0){document.getElementById('pv_str').value='';document.getElementById('pv_test').value='';return;}
-  const sv=Math.round(voc*n*100)/100;
-  const tv=Math.round(sv*1.5*100)/100;
-  document.getElementById('pv_str').value=sv+' V';
-  document.getElementById('pv_test').value=tv+' V';
-}
-
-/* ========== OCR 動作時間計算 ========== */
-function ocrTime(char,I,D){
-  // I = 電流倍率（整定値に対する倍数）, D = ダイヤル値
-  switch(char){
-    case 'EI': return (80/(I*I-1))*(D/10);             // 超反限時
-    case 'VI': return (13.5/(I-1))*(D/10);             // 強反限時
-    case 'NI': return (0.14/(Math.pow(I,0.02)-1))*(D/10); // 反限時
-    case 'DT': return 2*(D/10);                        // 定限時
-    default: return 0;
-  }
-}
-
-const OCR_FORMULAS={
-  EI:'T = 80 / (I² − 1) × D/10',
-  VI:'T = 13.5 / (I − 1) × D/10',
-  NI:'T = 0.14 / (I^0.02 − 1) × D/10',
-  DT:'T = 2 × D/10'
-};
-
-let lastOCRResult='';
-
-function calcOCR(){
-  const char=document.getElementById('ocr_char').value;
-  const tap=parseFloat(document.getElementById('ocr_tap').value);
-  const dial=parseFloat(document.getElementById('ocr_dial').value);
-  const pcts=[200,300,500,700,1000];
-
-  document.getElementById('ocrFormula').textContent=OCR_FORMULAS[char]+' (D='+dial+')';
-  document.getElementById('ocrResult').style.display='';
-  const tbody=document.getElementById('ocrBody');tbody.innerHTML='';
-  let txt='【OCR動作時間計算】\n特性: '+char+' / 限時電流: '+tap+'A / タイムレバー: '+dial+'\n';
-
-  pcts.forEach(pct=>{
-    const I=pct/100;
-    const ampere=Math.round(tap*I*100)/100;
-    const t=ocrTime(char,I,dial);
-    const ts=Math.round(t*1000)/1000;
-    const tr=document.createElement('tr');
-    const isRef=(pct===300||pct===700);
-    tr.innerHTML='<td'+(isRef?' class="hl"':'')+'>'+pct+'%</td><td>'+ampere+' A</td><td'+(isRef?' class="hl"':'')+'>'+ts+' s</td>';
-    tbody.appendChild(tr);
-    txt+=pct+'% ('+ampere+'A): '+ts+'s\n';
-  });
-  lastOCRResult=txt;
-}
-
-function copyOCR(){
-  if(!lastOCRResult){notify('先に計算してください','',1);return;}
-  copyText(lastOCRResult,'OCR計算結果をコピーしました');
-}
-
-/* ========== 電卓 ========== */
-const cMain=document.getElementById('cMain'),cExpr=document.getElementById('cExpr');
-let cCur='0',cPrev=null,cOp=null,cFresh=true;
-function cShow(){cMain.textContent=cCur;cExpr.textContent=cPrev!==null?(cPrev+' '+cOp):'';}
-function cCalcFn(a,op,b){
-  a=parseFloat(a);b=parseFloat(b);let r;
-  if(op==='＋')r=a+b;else if(op==='−')r=a-b;else if(op==='×')r=a*b;else if(op==='÷')r=b===0?NaN:a/b;
-  if(isNaN(r)||!isFinite(r))return'エラー';return String(Math.round(r*1e10)/1e10);
-}
-document.getElementById('cKeys').onclick=e=>{
-  const k=e.target.dataset.k;if(!k)return;if(cCur==='エラー'&&k!=='C')return;
-  if(/[0-9]/.test(k)){if(cFresh){cCur=k;cFresh=false;}else cCur=cCur==='0'?k:cCur+k;}
-  else if(k==='.'){if(cFresh){cCur='0.';cFresh=false;}else if(!cCur.includes('.'))cCur+='.';}
-  else if(k==='C'){cCur='0';cPrev=null;cOp=null;cFresh=true;}
-  else if(k==='←'){if(!cFresh)cCur=cCur.length>1?cCur.slice(0,-1):'0';}
-  else if(k==='±'){cCur=cCur.startsWith('-')?cCur.slice(1):(cCur==='0'?'0':'-'+cCur);}
-  else if(k==='√'){const v=parseFloat(cCur);cCur=v<0?'エラー':String(Math.round(Math.sqrt(v)*1e10)/1e10);cFresh=true;}
+/* === 関数電卓 === */
+const cM=document.getElementById('cM'),cE=document.getElementById('cE');
+let cCur='0',cPrev=null,cOp=null,cFr=true,cDeg=true;
+function cSh(){cM.textContent=cCur;cE.textContent=cPrev!==null?(cPrev+' '+cOp):'';}
+function cCl(a,op,b){a=parseFloat(a);b=parseFloat(b);let r;if(op==='＋')r=a+b;else if(op==='−')r=a-b;else if(op==='×')r=a*b;else if(op==='÷')r=b===0?NaN:a/b;else if(op==='^')r=Math.pow(a,b);if(isNaN(r)||!isFinite(r))return'Error';return String(Math.round(r*1e10)/1e10);}
+document.getElementById('cK').onclick=e=>{const k=e.target.dataset.k;if(!k)return;if(cCur==='Error'&&k!=='C')return;
+  if(/[0-9]/.test(k)){if(cFr){cCur=k;cFr=false;}else cCur=cCur==='0'?k:cCur+k;}
+  else if(k==='.'){if(cFr){cCur='0.';cFr=false;}else if(!cCur.includes('.'))cCur+='.';}
+  else if(k==='C'){cCur='0';cPrev=null;cOp=null;cFr=true;}
+  else if(k==='←'){if(!cFr)cCur=cCur.length>1?cCur.slice(0,-1):'0';}
+  else if(k==='±'){cCur=cCur.startsWith('-')?cCur.slice(1):'-'+cCur;}
+  else if(k==='π'){cCur=String(Math.PI);cFr=true;}
+  else if(k==='e'){cCur=String(Math.E);cFr=true;}
+  else if(k==='√'){cCur=parseFloat(cCur)<0?'Error':String(Math.round(Math.sqrt(parseFloat(cCur))*1e10)/1e10);cFr=true;}
+  else if(k==='x²'){cCur=String(Math.round(Math.pow(parseFloat(cCur),2)*1e10)/1e10);cFr=true;}
+  else if(k==='sin'){const v=cDeg?parseFloat(cCur)*Math.PI/180:parseFloat(cCur);cCur=String(Math.round(Math.sin(v)*1e10)/1e10);cFr=true;}
+  else if(k==='cos'){const v=cDeg?parseFloat(cCur)*Math.PI/180:parseFloat(cCur);cCur=String(Math.round(Math.cos(v)*1e10)/1e10);cFr=true;}
+  else if(k==='tan'){const v=cDeg?parseFloat(cCur)*Math.PI/180:parseFloat(cCur);cCur=String(Math.round(Math.tan(v)*1e10)/1e10);cFr=true;}
+  else if(k==='log'){cCur=String(Math.round(Math.log10(parseFloat(cCur))*1e10)/1e10);cFr=true;}
+  else if(k==='ln'){cCur=String(Math.round(Math.log(parseFloat(cCur))*1e10)/1e10);cFr=true;}
   else if(k==='%'){if(cPrev!==null&&cOp)cCur=String(parseFloat(cPrev)*parseFloat(cCur)/100);else cCur=String(parseFloat(cCur)/100);}
-  else if(['＋','−','×','÷'].includes(k)){if(cPrev!==null&&cOp&&!cFresh)cCur=cCalcFn(cPrev,cOp,cCur);cPrev=cCur;cOp=k;cFresh=true;}
-  else if(k==='='){if(cPrev!==null&&cOp){cCur=cCalcFn(cPrev,cOp,cCur);cPrev=null;cOp=null;cFresh=true;}}
-  cShow();
-};
-cShow();
+  else if(k==='DEG'){cDeg=!cDeg;e.target.textContent=cDeg?'DEG':'RAD';}
+  else if(['＋','−','×','÷','^'].includes(k)){if(cPrev!==null&&cOp&&!cFr)cCur=cCl(cPrev,cOp,cCur);cPrev=cCur;cOp=k;cFr=true;}
+  else if(k==='='){if(cPrev!==null&&cOp){cCur=cCl(cPrev,cOp,cCur);cPrev=null;cOp=null;cFr=true;}}
+  cSh();};
+cSh();
 
-/* ========== カメラ ========== */
-let camStream=null,facingMode='environment';
-const vid=document.getElementById('camVideo'),cvs=document.getElementById('camCanvas');
+/* === 角度計・水平器 === */
+let angOff=0,lvlOffX=0,lvlOffY=0,sensorStarted=false;
+function startSensor(){
+  if(sensorStarted)return;sensorStarted=true;
+  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(p=>{if(p==='granted')window.addEventListener('deviceorientation',onOri);else notify('センサー許可が必要です','',1);}).catch(()=>notify('センサーエラー','',1));
+  }else{window.addEventListener('deviceorientation',onOri);}
+}
+function onOri(e){
+  const b=e.beta||0,g=e.gamma||0;
+  // 角度計
+  const ang=Math.round((b-angOff)*10)/10;
+  document.getElementById('angVal').textContent=ang.toFixed(1);
+  const pct=Math.max(0,Math.min(100,50+ang/90*50));
+  document.getElementById('angDot').style.left=pct+'%';
+  // 水平器
+  const lx=Math.round((g-lvlOffX)*10)/10,ly=Math.round((b-lvlOffY)*10)/10;
+  document.getElementById('lvlX').textContent=lx.toFixed(1);
+  document.getElementById('lvlY').textContent=ly.toFixed(1);
+  const bx=Math.max(-90,Math.min(90,g-lvlOffX)),by=Math.max(-90,Math.min(90,b-lvlOffY));
+  document.getElementById('lvlBub').style.transform='translate(calc(-50% + '+bx+'px), calc(-50% + '+by+'px))';
+}
+function angZero(){angOff=(window._lastBeta||0);notify('0点調整しました','',1);}
+function lvlZero(){lvlOffX=(window._lastGamma||0);lvlOffY=(window._lastBeta||0);notify('0点調整しました','',1);}
+window.addEventListener('deviceorientation',e=>{window._lastBeta=e.beta||0;window._lastGamma=e.gamma||0;});
 
-document.getElementById('camStart').onclick=async()=>{
+/* === 天気 === */
+const WMO={0:'☀️ 快晴',1:'🌤 晴れ',2:'⛅ 曇り',3:'☁️ 曇り',45:'🌫 霧',48:'🌫 霧氷',51:'🌦 小雨',53:'🌧 雨',55:'🌧 強い雨',61:'🌧 雨',63:'🌧 中雨',65:'🌧 大雨',71:'🌨 雪',73:'🌨 雪',75:'🌨 大雪',80:'🌧 にわか雨',81:'🌧 にわか雨',82:'🌧 豪雨',95:'⛈ 雷雨'};
+async function getWeather(elId){
+  const el=document.getElementById(elId);el.style.display='flex';el.querySelector('.wdata').innerHTML='取得中…';
   try{
-    if(camStream)camStream.getTracks().forEach(t=>t.stop());
-    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facingMode,width:{ideal:1280}},audio:false});
-    vid.srcObject=camStream;vid.style.display='block';
-    document.getElementById('camShoot').style.display='';
-    document.getElementById('camSwitch').style.display='';
-    document.getElementById('camStart').textContent='カメラ再起動';
-  }catch(e){notify('カメラエラー',e.message,1);}
-};
-
-document.getElementById('camSwitch').onclick=async()=>{
-  facingMode=facingMode==='environment'?'user':'environment';
-  document.getElementById('camStart').click();
-};
-
-document.getElementById('camShoot').onclick=()=>{
-  if(!camStream)return;
-  cvs.width=vid.videoWidth;cvs.height=vid.videoHeight;
-  cvs.getContext('2d').drawImage(vid,0,0);
-  const url=cvs.toDataURL('image/jpeg',0.85);
-  const img=document.createElement('img');img.src=url;
-  img.onclick=()=>{const a=document.createElement('a');a.href=url;a.download='photo_'+Date.now()+'.jpg';a.click();};
-  document.getElementById('camPhotos').prepend(img);
-  updatePhotoBadge();
-  notify('撮影しました','タップでダウンロード',1);
-};
-
-function updatePhotoBadge(){
-  const n=document.querySelectorAll('#camPhotos img').length;
-  const b=document.getElementById('photoBadge');
-  if(n>0){b.textContent='📷 '+n+'枚';b.style.display='block';}
-  else b.style.display='none';
+    const pos=await new Promise((ok,ng)=>navigator.geolocation.getCurrentPosition(ok,ng,{timeout:10000}));
+    const lat=pos.coords.latitude,lon=pos.coords.longitude;
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,relative_humidity_2m,weather_code');
+    const d=await r.json(),c=d.current;
+    const wc=c.weather_code,desc=WMO[wc]||('コード'+wc);
+    el.querySelector('.wicon').textContent=desc.split(' ')[0];
+    el.querySelector('.wdata').innerHTML='<b>'+c.temperature_2m+'℃</b> / 湿度 '+c.relative_humidity_2m+'% / '+desc.split(' ')[1];
+  }catch(e){el.querySelector('.wdata').innerHTML='取得失敗: '+e.message;}
 }
 
-/* ========== 保存（Google Drive → CSV） ========== */
-function csvEsc(v){
-  const s=String(v==null?'':v);
-  if(s.includes(',')||s.includes('"')||s.includes('\n'))return '"'+s.replace(/"/g,'""')+'"';
-  return s;
+/* === カメラ === */
+let camS=null,facing='environment';
+const vid=document.getElementById('camV'),cvs=document.getElementById('camC');
+document.getElementById('camOn').onclick=async()=>{try{if(camS)camS.getTracks().forEach(t=>t.stop());camS=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280}},audio:false});vid.srcObject=camS;vid.style.display='block';document.getElementById('camSh').style.display='';document.getElementById('camSw').style.display='';}catch(e){notify('カメラエラー',e.message,1);}};
+document.getElementById('camSw').onclick=()=>{facing=facing==='environment'?'user':'environment';document.getElementById('camOn').click();};
+document.getElementById('camSh').onclick=()=>{if(!camS)return;cvs.width=vid.videoWidth;cvs.height=vid.videoHeight;cvs.getContext('2d').drawImage(vid,0,0);const url=cvs.toDataURL('image/jpeg',0.85);const img=document.createElement('img');img.src=url;img.onclick=()=>{const a=document.createElement('a');a.href=url;a.download='photo_'+Date.now()+'.jpg';a.click();};document.getElementById('camPh').prepend(img);notify('撮影しました','',1);};
+
+/* === クラウド保存 === */
+function buildCSV(section){
+  const d=new Date(),ds=d.toLocaleString('ja-JP');let csv='保存日時,'+ds+'\nユーザー,'+CU+'\n\n';
+  if(section==='ocr'){csv+='[OCR動作時間計算]\n特性,'+document.getElementById('oc_ch').value+'\n限時電流A,'+document.getElementById('oc_tap').value+'\nタイムレバー,'+document.getElementById('oc_dial').value+'\n倍率%,電流A,動作時間s\n';document.querySelectorAll('#ocrB tr').forEach(tr=>{const tds=tr.querySelectorAll('td');csv+=tds[0].textContent+','+tds[1].textContent+','+tds[2].textContent+'\n';});}
+  else if(section==='taiatu'){csv+='[耐圧試験]\n項目,1次電流mA,2次電流mA\n試験前絶縁抵抗MΩ,'+($('tv_pre'))+',\n1分経過,'+$('tv_1m_1')+','+$('tv_1m_2')+'\n5分経過,'+$('tv_5m_1')+','+$('tv_5m_2')+'\n9分経過,'+$('tv_9m_1')+','+$('tv_9m_2')+'\n試験後絶縁抵抗MΩ,'+$('tv_post')+',\n';}
+  else if(section==='ins'){csv+='[絶縁抵抗測定]\nグループ,測定箇所,試験電圧,基準MΩ,測定値MΩ,判定\n';document.querySelectorAll('#insG .grp').forEach(g=>{const gn=g.querySelector('.gn').value;g.querySelectorAll('tbody tr').forEach(tr=>{const v=tr.querySelector('.val').value;if(!v)return;csv+=gn+','+tr.querySelector('.plc').value+','+tr.querySelector('.tv').value+','+tr.querySelector('.ref').value+','+v+','+tr.querySelector('.jd').textContent+'\n';});});}
+  else if(section==='ear'){csv+='[接地抵抗測定]\n測定箇所,種別,基準Ω,測定値Ω,判定\n';document.querySelectorAll('#earB tr').forEach(tr=>{const v=tr.querySelector('.val').value;if(!v)return;csv+=(tr.querySelector('.plc').value||'')+','+tr.querySelector('.typ').value+','+tr.querySelector('.ref').value+','+v+','+tr.querySelector('.jd').textContent+'\n';});}
+  else if(section==='pv'){csv+='[太陽光パネル試験電圧]\nパネル開放電圧V,'+$('pv_v')+'\n直列枚数,'+$('pv_n')+'\nストリング電圧V,'+document.getElementById('pv_s').value+'\n試験電圧V,'+document.getElementById('pv_t').value+'\n';}
+  // 天気情報があれば追加
+  const wx=document.querySelector('.wx[style*="flex"] .wdata b');
+  if(wx)csv+='\n[気象情報]\n'+document.querySelector('.wx[style*="flex"] .wdata').textContent+'\n';
+  return csv;
 }
-function csvRow(...cols){return cols.map(csvEsc).join(',')+'\n';}
+function $(id){return document.getElementById(id).value||'';}
 
-function buildCSV(){
-  const d=new Date();
-  let c='';
-  c+=csvRow('保存日時',d.toLocaleString('ja-JP'));
-  c+=csvRow('ユーザー',currentUser);
-  c+='\n';
-
-  // 耐圧試験
-  c+=csvRow('[耐圧試験]');
-  c+=csvRow('項目','値','単位');
-  c+=csvRow('試験前 絶縁抵抗',document.getElementById('tv_preIns').value||'','MΩ');
-  c+=csvRow('1分経過',document.getElementById('tv_1m').value||'','mA');
-  c+=csvRow('5分経過',document.getElementById('tv_5m').value||'','mA');
-  c+=csvRow('9分経過',document.getElementById('tv_9m').value||'','mA');
-  c+=csvRow('試験後 絶縁抵抗',document.getElementById('tv_postIns').value||'','MΩ');
-  c+='\n';
-
-  // 絶縁抵抗測定
-  c+=csvRow('[絶縁抵抗測定]');
-  c+=csvRow('グループ','測定箇所','試験電圧','基準値MΩ','測定値MΩ','判定');
-  document.querySelectorAll('#insGroups .grp').forEach(g=>{
-    const gn=g.querySelector('.grpname').value;
-    g.querySelectorAll('tbody tr').forEach(tr=>{
-      const v=tr.querySelector('.val').value;
-      if(!v)return;
-      c+=csvRow(gn, tr.querySelector('.plc').value, tr.querySelector('.tv').value,
-        tr.querySelector('.ref').value, v, tr.querySelector('.jd').textContent);
-    });
-  });
-  c+='\n';
-
-  // 接地抵抗測定
-  c+=csvRow('[接地抵抗測定]');
-  c+=csvRow('測定箇所','接地種別','基準値Ω','測定値Ω','判定');
-  document.querySelectorAll('#earBody tr').forEach(tr=>{
-    const v=tr.querySelector('.val').value;
-    if(!v)return;
-    c+=csvRow(tr.querySelector('.plc').value||'', tr.querySelector('.typ').value,
-      tr.querySelector('.ref').value, v, tr.querySelector('.jd').textContent);
-  });
-  c+='\n';
-
-  // 太陽光パネル試験電圧
-  c+=csvRow('[太陽光パネル試験電圧]');
-  c+=csvRow('項目','値');
-  c+=csvRow('パネル開放電圧(V)',document.getElementById('pv_voc').value||'');
-  c+=csvRow('直列枚数',document.getElementById('pv_n').value||'');
-  c+=csvRow('ストリング開放電圧(V)',document.getElementById('pv_str').value||'');
-  c+=csvRow('試験電圧 ×1.5(V)',document.getElementById('pv_test').value||'');
-  c+='\n';
-
-  // OCR計算結果
-  c+=csvRow('[OCR動作時間計算]');
-  const ch=document.getElementById('ocr_char').value;
-  const tp=document.getElementById('ocr_tap').value;
-  const dl=document.getElementById('ocr_dial').value;
-  c+=csvRow('限時特性',ch);
-  c+=csvRow('限時電流(A)',tp);
-  c+=csvRow('タイムレバー',dl);
-  c+=csvRow('入力倍率%','入力電流(A)','動作時間(s)');
-  [200,300,500,700,1000].forEach(pct=>{
-    const I=pct/100;
-    const amp=Math.round(parseFloat(tp)*I*100)/100;
-    const t=Math.round(ocrTime(ch,I,parseFloat(dl))*1000)/1000;
-    c+=csvRow(pct,amp,t);
-  });
-  return c;
-}
-
-function getPhotos(){
-  const imgs=document.querySelectorAll('#camPhotos img');
-  const arr=[];
-  imgs.forEach((img,i)=>{
-    arr.push({ filename:'photo_'+String(i+1).padStart(3,'0')+'.jpg', base64:img.src });
-  });
-  return arr;
+async function cloudSave(section){
+  if(!CU){notify('ログインしてください','',1);return;}
+  const csv=buildCSV(section);const now=new Date();
+  const ds=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  const ts=String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0')+String(now.getSeconds()).padStart(2,'0');
+  const sp=document.getElementById('saveP'),st=document.getElementById('svSt'),br=document.getElementById('svBr'),dn=document.getElementById('svDn');
+  sp.classList.add('on');dn.style.display='none';br.style.width='0%';st.textContent='保存中…';
+  try{const r=await gp({action:'saveCSV',user:CU,date:ds,time:ts,csv:csv});br.style.width='100%';if(r.ok){st.textContent='✅ 保存完了（'+ds+'/'+CU+'）';notify('Drive保存完了','',2);}else{st.textContent='❌ '+r.msg;}}catch(e){st.textContent='❌ 通信エラー';}
+  dn.style.display='block';
 }
 
 async function saveAll(){
-  if(!GAS_URL){notify('GAS_URL未設定','code.gsをデプロイしてURLを設定してください',1);return;}
-  if(!currentUser){notify('ログインしてください','',1);return;}
-
-  const csvData=buildCSV();
-  const photos=getPhotos();
-  const totalSteps=1+photos.length;
-  let step=0;
-
-  const prog=document.getElementById('saveProgress');
-  const bar=document.getElementById('saveBar');
-  const status=document.getElementById('saveStatus');
-  const doneBtn=document.getElementById('saveDone');
-  prog.classList.add('on');doneBtn.style.display='none';doneBtn.textContent='閉じる';bar.style.width='0%';
-
-  const now=new Date();
-  const dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-  const timeStr=String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0')+String(now.getSeconds()).padStart(2,'0');
-
+  if(!CU){notify('ログインしてください','',1);return;}
+  const photos=Array.from(document.querySelectorAll('#camPh img')).map((img,i)=>({filename:'photo_'+String(i+1).padStart(3,'0')+'.jpg',base64:img.src}));
+  const sections=['ocr','taiatu','ins','ear','pv'];let allCSV='';
+  sections.forEach(s=>allCSV+=buildCSV(s)+'\n');
+  const now=new Date(),ds=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'),ts=String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0')+String(now.getSeconds()).padStart(2,'0');
+  const sp=document.getElementById('saveP'),st=document.getElementById('svSt'),br=document.getElementById('svBr'),dn=document.getElementById('svDn');
+  sp.classList.add('on');dn.style.display='none';br.style.width='0%';
+  const total=1+photos.length;let step=0;
   try{
-    status.textContent='試験データ(CSV)を保存中…';
-    const r1=await gasPost({ action:'saveCSV', user:currentUser, date:dateStr, time:timeStr, csv:csvData });
-    if(!r1.ok)throw new Error(r1.msg);
-    step++;bar.style.width=Math.round(step/totalSteps*100)+'%';
-    const folderId=r1.folderId;
-
-    for(let i=0;i<photos.length;i++){
-      status.textContent='写真を保存中… ('+(i+1)+'/'+photos.length+')';
-      const r=await gasPost({ action:'savePhoto', folderId:folderId, filename:photos[i].filename, base64:photos[i].base64 });
-      if(!r.ok)throw new Error(r.msg);
-      step++;bar.style.width=Math.round(step/totalSteps*100)+'%';
-    }
-
-    bar.style.width='100%';
-    status.textContent='✅ 保存完了（'+dateStr+' / '+currentUser+'）\nCSV 1件 + 写真 '+photos.length+'枚';
-    doneBtn.style.display='block';
-    notify('Drive保存完了','CSV+写真'+photos.length+'枚',2);
-  }catch(e){
-    status.textContent='❌ エラー: '+e.message;
-    doneBtn.style.display='block';
-  }
-}
-
-/* ========== ブラウザ通知許可 ========== */
-if('Notification'in window&&Notification.permission==='default'){
-  setTimeout(()=>Notification.requestPermission(),3000);
+    st.textContent='CSV保存中…';
+    const r=await gp({action:'saveCSV',user:CU,date:ds,time:ts,csv:allCSV});
+    if(!r.ok)throw new Error(r.msg);step++;br.style.width=Math.round(step/total*100)+'%';
+    for(let i=0;i<photos.length;i++){st.textContent='写真 '+(i+1)+'/'+photos.length;const r2=await gp({action:'savePhoto',folderId:r.folderId,filename:photos[i].filename,base64:photos[i].base64});if(!r2.ok)throw new Error(r2.msg);step++;br.style.width=Math.round(step/total*100)+'%';}
+    br.style.width='100%';st.textContent='✅ 全データ保存完了（写真'+photos.length+'枚）';notify('Drive保存完了','',2);
+  }catch(e){st.textContent='❌ '+e.message;}
+  dn.style.display='block';
 }
 </script>
 </body>
