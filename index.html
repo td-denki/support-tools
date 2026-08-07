@@ -767,5 +767,43 @@ let lastCharge='';
 
 
 </script>
+<script>
+  /* ===== 認可トークン対応（追記） ===== */
+  (function () {
+      var KEY = 'shiken_s';
+      var NO_AUTH = ['login', 'lineLogin', 'changePassword', 'resetPassword'];
+      function readTok() {
+            try { return (JSON.parse(localStorage.getItem(KEY)) || {}).token || null; }
+            catch (e) { return null; }
+      }
+      function mergeTok(tk) {
+            try {
+                    var s = JSON.parse(localStorage.getItem(KEY)) || {};
+                    s.token = tk;
+                    localStorage.setItem(KEY, JSON.stringify(s));
+            } catch (e) {}
+      }
+      var _gp = window.gp;
+      window.gp = async function (body) {
+            body = body || {};
+            if (NO_AUTH.indexOf(body.action) === -1) {
+                    var t = readTok();
+                    if (t) body.token = t;
+            }
+            var r = await _gp(body);
+            if (r && r.ok && (body.action === 'login' || body.action === 'lineLogin') && r.token) {
+                    var tk = r.token;
+                    setTimeout(function () { mergeTok(tk); }, 0);
+            }
+            if (r && r.code === 'AUTH_REQUIRED') {
+                    localStorage.removeItem(KEY);
+                    alert('セッションの有効期限が切れました。再度ログインしてください。');
+                    location.reload();
+            }
+            return r;
+      };
+  })();
+</script>
+  
 </body>
 </html>
